@@ -21,6 +21,8 @@ public class SilverServiceCar extends Car
 		super(regNo, make, model, driverName, passengerCapacity);
 		this.refreshments = refreshments;
 		this.bookingFee = bookingFee;
+		
+		super.setBookingFee(bookingFee);
 	}
 	
 	//adds refreshments to refreshment array;
@@ -109,7 +111,8 @@ public class SilverServiceCar extends Car
 	@Override
 	public String toString()
 	{
-		return super.toString() + refreshmentsDisplay().toString() + getCurrentBooking().toString()+ getPastBooking().toString();
+		//fix toString. 
+		return super.toString() + ":" + refreshmentsDisplay().toString() + ":" + getCurrentBooking().toString() + ":" + getPastBooking().toString();
 	}
 	
 	

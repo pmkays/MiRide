@@ -28,7 +28,7 @@ public class Car
 	private double tripFee = 0;
 
 	// Constants
-	private final double STANDARD_BOOKING_FEE = 1.5;
+	private double bookingFee = 1.5;
 	private final int MAXIUM_PASSENGER_CAPACITY = 10;
 	private final int MINIMUM_PASSENGER_CAPACITY = 1;
 
@@ -80,7 +80,7 @@ public class Car
 		// Booking is permissible
 		if (available && dateAvailable && dateValid && validPassengerNumber)
 		{
-			tripFee = STANDARD_BOOKING_FEE;
+			tripFee = bookingFee;
 			Booking booking = new Booking(firstName, lastName, required, numPassengers, this);
 			currentBookings[bookingSpotAvailable] = booking;
 			bookingSpotAvailable++;
@@ -281,9 +281,9 @@ public class Car
 
 		// call complete booking on Booking object
 		// double kilometersTravelled = Math.random()* 100;
-		double fee = kilometers * (STANDARD_BOOKING_FEE * 0.3);
+		double fee = kilometers * (bookingFee * 0.3);
 		tripFee += fee;
-		booking.completeBooking(kilometers, fee, STANDARD_BOOKING_FEE);
+		booking.completeBooking(kilometers, fee, bookingFee);
 		// add booking to past bookings
 		for (int i = 0; i < pastBookings.length; i++)
 		{
@@ -411,7 +411,7 @@ public class Car
 	/*
 	 * Checks to see if if the car is currently booked on the date specified.
 	 */
-	private boolean notCurrentlyBookedOnDate(DateTime date)
+	public boolean notCurrentlyBookedOnDate(DateTime date)
 	{
 		boolean foundDate = true;
 		for (int i = 0; i < currentBookings.length; i++)
@@ -479,4 +479,8 @@ public class Car
 		return pastBookings[i];
 	}
 	
+	protected void setBookingFee(double bookingFee)
+	{
+		this.bookingFee= bookingFee;
+	}
 }

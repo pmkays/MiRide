@@ -51,11 +51,15 @@ public class Menu
 					completeBooking();
 					break;
 				case "DA":
-					System.out.println(application.displayAllBookings());
+//					System.out.println(application.displayAllBookings());
+					displayAllCars();
 					break;
 				case "SS":
 					System.out.print("Enter Registration Number: ");
 					System.out.println(application.displaySpecificCar(console.nextLine()));
+					break;
+				case "SA":
+					searchAvailableCars();
 					break;
 				case "SD":
 					application.seedData();
@@ -315,6 +319,36 @@ public class Menu
 			}
 			return regNo;
 		}
+	}
+	
+	//
+	public void searchAvailableCars()
+	{
+		System.out.println("Enter type (SD/SS): ");
+		String carType = console.nextLine();
+		
+		System.out.println("Enter date: ");
+		String dateEntered = console.nextLine();
+		int day = Integer.parseInt(dateEntered.substring(0, 2));
+		int month = Integer.parseInt(dateEntered.substring(3, 5));
+		int year = Integer.parseInt(dateEntered.substring(6));
+		DateTime dateRequired = new DateTime(day, month, year);
+		
+		String getDetails = application.availableCarsDetails(dateRequired, carType);
+		System.out.println(getDetails);
+		
+	}
+	
+	public void displayAllCars()
+	{
+		System.out.println("Enter Type (SD/SS): ");
+		String carType = console.nextLine().toUpperCase(); 
+		
+		System.out.println("Enter Sort Order: ");
+		String sortOrder = console.nextLine().toUpperCase();
+		
+		String result = application.displayAllBookings(carType, sortOrder);
+		System.out.println(result);
 	}
 
 	/*

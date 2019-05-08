@@ -3,6 +3,7 @@ package app;
 import cars.Car;
 import cars.SilverServiceCar;
 import utilities.DateTime;
+import utilities.DateUtilities;
 import utilities.MiRidesUtilities;
 
 /*
@@ -13,11 +14,16 @@ import utilities.MiRidesUtilities;
  */
 public class MiRideApplication
 {
-	private Car[] cars = new Car[15];
+	private Car[] cars = new Car[12];
 	private int itemCount = 0;
-	private String[] availableCars;
+	private String[] availableCars = new String[12];
 	private String[] refreshmentsArray;
+	private Car[] availableCarsArray;	
 	private SilverServiceCar car;
+	Car[] SS = new Car[6]; 
+	Car[] SD = new Car[6];
+	Car SDcar;
+	SilverServiceCar SScar;
 
 	public MiRideApplication()
 	{
@@ -242,12 +248,12 @@ public class MiRideApplication
 		// 2 cars not booked
 		Car honda = new Car("SIM194", "Honda", "Accord Euro", "Henry Cavill", 5);
 		cars[itemCount] = honda;
-		honda.book("Craig", "Cocker", new DateTime(1), 3);
+//		honda.book("Craig", "Cocker", new DateTime(1), 3);
 		itemCount++;
 		
 		Car lexus = new Car("LEX666", "Lexus", "M1", "Angela Landsbury", 3);
 		cars[itemCount] = lexus;
-		lexus.book("Craig", "Cocker", new DateTime(1), 3);
+//		lexus.book("Craig", "Cocker", new DateTime(1), 3);
 		itemCount++;
 		
 		// 2 cars booked
@@ -282,30 +288,43 @@ public class MiRideApplication
 		DateTime inTwoDays = new DateTime(2);
 		rover.book("Rodney", "Cocker", inTwoDays, 3);
 		rover.completeBooking("Rodney", "Cocker", inTwoDays,75);
+
+		
+		SilverServiceCar ssCar1 = new SilverServiceCar("AAA123", "Toyota", "Camry", "Ben Gibbard", 7,  new String[] {"Soda", "Mints", "Chocolate"}, 9.0);
+		cars[itemCount] = ssCar1;
+		itemCount++;
+		
+		SilverServiceCar ssCar2 = new SilverServiceCar("BHS678", "Mini", "Cooper", "Andy Hull", 6,  new String[] {"Fruit", "Alcohol", "Crackers"}, 4.0);
+		cars[itemCount] = ssCar2;
+		itemCount++;
+		
+		SilverServiceCar ssCar3 = new SilverServiceCar("TJH903", "Honda", "Odyssey", "John Frusciante", 8,  new String[] {"Lollies", "Water", "Juice"}, 6.0);
+		cars[itemCount] = ssCar3;
+		itemCount++;
+		ssCar3.book("John", "Richards", new DateTime(1), 3);
+		
+		
+		SilverServiceCar ssCar4 = new SilverServiceCar("BEK502", "Suzuki", "Swift", "Gina Esposito", 7,  new String[] {"Salad", "Smoothie", "Soda"}, 7.0);
+		cars[itemCount] = ssCar4;
+		itemCount++;
+		ssCar4.book("John", "Richards", new DateTime(1), 6);
+		
+		SilverServiceCar ssCar5 = new SilverServiceCar("KLI695", "Volkswagen", "Polo", "Emma Ragnarson", 9,  new String[] {"Soda", "Mints", "Chocolate"}, 5.0);
+		cars[itemCount] = ssCar5;
+		itemCount++;
+		ssCar5.book("Paula", "Kurniawan", new DateTime(1), 7);
+		ssCar5.completeBooking("Paula", "Kurniawan", 23);
+		
+		SilverServiceCar ssCar6 = new SilverServiceCar("ZBY789", "Honda", "Jazz", "Samuel Jones", 9,  new String[] {"Alcohol", "Chocolate", "Lollies"}, 8.0);
+		cars[itemCount] = ssCar6;
+		itemCount++;
+		ssCar6.book("Paula", "Kurniawan", new DateTime(1), 5);
+		ssCar6.completeBooking("Paula", "Kurniawan", 22);
+		
 		return true;
+
 	}
 
-	public String displayAllBookings()
-	{
-		if(itemCount == 0)
-		{
-			return "No cars have been added to the system.";
-		}
-		StringBuilder sb = new StringBuilder();
-		sb.append("Summary of all cars: ");
-		sb.append("\n");
-
-		for (int i = 0; i < itemCount; i++)
-		{
-			sb.append(cars[i].getDetails());
-		}
-		return sb.toString();
-	}
-	
-	public String displayAllSortedBookings(String carType, String sortOrdeer)
-	{
-		return "hello";
-	}
 	/*displayallBookings sort from passengercapacity
 	 * int count = 0
 	 * loop through cars array using one integer
@@ -457,31 +476,269 @@ public class MiRideApplication
 		return true; //how to validate if a car is available? take out code segment from this.book method?
 	}
 	
-//	public String searchAvailableCars()
-//	{
-//		if(itemCount == 0)
-//		{
-//			return "There are no available cars.";
-//		}
-//		StringBuilder sb = new StringBuilder();
+	/*run through cars array
+	 * run through availableCar string array
+	 * if any of the regNo froma vailableCars String array matchers with a regNo of a car in cars array
+	 * put that car in an availableCar Car array, bc obvs that car is available
+	 * 
+	 * this String method (DateTime object, String carType)
+	 * first validate the date user puts in
+	 * if the userinput date doesnt matches the date of a car's booking in avialablecar.getSpecificCurrentBooking(i) array  
+	 * then loop through availableCars array (Now the date has been validated and car options has been limited to userinput's date)		
+	 * 		then validate SD/SS
+	 * 			if user puts in SS && cars[i] instanceof SilverServiceCar
+	 * 				return availableCars[i].getDetails
+	 * 			else if (user puts in SD && !cars[i] instanceof SilverServiceCar)
+	 * 				return avialableCars[i].getDetails
+	 * 				
+	 * 
+	 */
+	public Car[] searchAvailableCars()
+	{
+		int count = 0;
+		for (int i = 0; i < cars.length; i++)
+		{
+			for(int j =0; j < itemCount; i++)
+			{
+				//works when theres no bookings
+				if (availableCars[i] == null)
+				{
+					return cars;
+				}
+				else if(availableCars[i].equals(cars[j].getRegistrationNumber()))
+				{
+					//car not being added.		
+					availableCarsArray[count] = cars[j]; 
+					count++;	
+				}
+				else
+				{
+					System.out.println("There are no available cars to display.");
+					break;
+					//need to get out of method here to not return an empty availableCarsArray
+				}
+			}
+		}
+		return availableCarsArray;
+	}
+	
+	public String availableCarsDetails(DateTime userDate, String carType)
+	{
+		Car[] avCars = searchAvailableCars();
+		
+		for(int i = 0; i< avCars.length; i++)
+		{
+			for(int j = 0; j< avCars[i].getCurrentBooking().length; j++)
+			{
+				//validates car is not booked on userDate, ie car must be free this day
+				if(avCars[i] != null && avCars[i].notCurrentlyBookedOnDate(userDate))
+				{
+					//validates user input carType, date not in past and date not more than three days
+					if(carType.equals("SS") && cars[i] instanceof SilverServiceCar && 
+							DateUtilities.dateIsNotInPast(userDate) && DateUtilities.dateIsNotMoreThan3Days(userDate)) 
+					{
+						return avCars[i].getDetails();
+					}
+					//validates user input carType, date not in past and date not more than seven days
+					else if (carType.equals("SD") && !(cars[i] instanceof SilverServiceCar) && 
+							DateUtilities.dateIsNotInPast(userDate) && DateUtilities.dateIsNotMoreThan7Days(userDate))
+					{
+						return avCars[i].getDetails();
+					}
+				}
+			}
+		}
+		return "There are no available cars on this date";
+	}
+	
+	/*user puts in SD/SS
+	 * make checkwhichCarmethod 
+	 * 	checks if car is SS or SD. 
+	 * 	if instance of SS, put car in SS array
+	 * 	if not instance of SS, put car in SD array
+	 * putting in array makes easier to sort through
+	 * 
+	 * Then calls sort method. 
+	 * make sort method (pass in A/D) 
+	 * 
+	 * general outline:
+	 */
+	
+	public boolean typeOfCar (String carType)
+	{
+		//make two counters??
+		boolean check = true;
+		int count = 0;
+		for(int i =0; i < cars.length; i++)
+		{
+			if(cars[i]!= null)
+			{
+				if(carType.equals("SS") && cars[i] instanceof SilverServiceCar)
+				{
+					SS[count]= cars[i];
+					count++;
+
+				}
+				else if(carType.equals("SD") && !(cars[i] instanceof SilverServiceCar))
+				{
+					SD[count] = cars[i]; 
+					count++;
+					check = false;
+				}
+			}
+		}
+		return check;
+	}
+	
+	public void SSsortCarsA()
+	{
+		for(int i =0; i<SS.length; i++)
+		{
+			for (int j=i+1; j < SS.length; j++)
+			{
+				if(SS[i]!= null)
+				{
+					if(SS[i].getRegistrationNumber().compareTo(SS[j].getRegistrationNumber()) > 0)
+					{
+						SScar = (SilverServiceCar) SS[i];
+						SS[i]=SS[j];
+						SS[j]= SScar;
+					}
+				}
+			}
+		}
+		
+		for(int i=0; i<SS.length; i++)
+		{
+			System.out.println(SS[i].getDetails());	
+		}
+	}
+	
+	public void SDsortCarsA()
+	{
+		for(int i =0; i<SD.length; i++)
+		{
+			for (int j=i+1; j < SD.length; j++)
+			{
+				if(SD[i] != null)
+				{
+					if(SD[i].getRegistrationNumber().compareTo(SD[j].getRegistrationNumber()) > 0)
+					{
+						SDcar = SD[i];
+						SD[i]=SD[j];
+						SD[j]= SDcar;				
+					}
+				}
+				else
+				{
+					break;
+				}
+			}		
+		}
+		
+		for(int i=0; i<SD.length; i++)
+		{
+			System.out.println(SD[i].getDetails());	
+		}
+	}
+	
+	public void SSsortCarsD()
+	{
+		for(int i =0; i<SS.length; i++)
+		{
+			for (int j=i+1; j < SS.length; j++)
+			{
+				if(SS[i]!= null)
+				{
+					if(SS[i].getRegistrationNumber().compareTo(SS[j].getRegistrationNumber()) < 0)
+					{
+						SScar = (SilverServiceCar) SS[i];
+						SS[i]=SS[j];
+						SS[j]= SScar;
+					}
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+		
+		for(int i=0; i<SS.length; i++)
+		{
+			System.out.println(SS[i].getDetails());	
+		}
+	}		
+
+	public void SDsortCarsD()
+	{
+		for(int i =0; i<SD.length; i++)
+		{
+			for (int j=i+1; j < SD.length; j++)
+			{
+				if (SD[i]!= null)
+				{
+					if(SD[i].getRegistrationNumber().compareTo(SD[j].getRegistrationNumber()) < 0)
+					{
+						SDcar = SD[i];
+						SD[i]=SD[j];
+						SD[j]= SDcar;
+					}
+				}
+				else
+				{
+					break;
+				}
+			}		
+		}
+		
+		for(int i=0; i<SD.length; i++)
+		{
+			System.out.println(SD[i].getDetails());	
+		}
+	}
+	
+	public String displayAllBookings(String carType, String sortOrder)
+	{
+		if(itemCount == 0)
+		{
+			return "No cars have been added to the system.";
+		}
+		StringBuilder sb = new StringBuilder();
 //		sb.append("Summary of all cars: ");
 //		sb.append("\n");
-//
+
+		//if it returns true, then it is SS
+		if (typeOfCar(carType))
+		{
+			if(sortOrder.equals("A"))
+			{
+				SSsortCarsA();
+			}
+			else
+			{
+				SSsortCarsD();
+			}
+		}
+		else
+		{
+			if(sortOrder.equals("A"))
+			{
+				SDsortCarsA();
+			}
+			else
+			{
+				SDsortCarsD();
+			}		
+		}
 //		for (int i = 0; i < itemCount; i++)
 //		{
-//			for(int j =0; j < itemCount; i++)
-//			{
-//				if(cars[j] != null && availableCars[i] != null)
-//				{
-//					if(cars[j].getRegistrationNumber().contains(availableCars[i]))
-//					{
-//						return cars[j].getDetails();
-//					}
-//				}				
-//			}
+//			sb.append(cars[i].getDetails());
 //		}
-//		return sb.toString();
-//	}
+		return sb.toString();
+	}
+	
 }
+
 
 
