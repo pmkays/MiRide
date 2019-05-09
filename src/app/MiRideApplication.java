@@ -14,14 +14,14 @@ import utilities.MiRidesUtilities;
  */
 public class MiRideApplication
 {
-	private Car[] cars = new Car[12];
+	private Car[] cars = new Car[15];
 	private int itemCount = 0;
 	private String[] availableCars = new String[12];
 	private String[] refreshmentsArray;
 	private Car[] availableCarsArray;	
 	private SilverServiceCar car;
-	Car[] SS = new Car[6]; 
-	Car[] SD = new Car[6];
+	Car[] SS = new Car[15]; 
+	Car[] SD = new Car[15];
 	Car SDcar;
 	SilverServiceCar SScar;
 
@@ -312,12 +312,14 @@ public class MiRideApplication
 		SilverServiceCar ssCar5 = new SilverServiceCar("KLI695", "Volkswagen", "Polo", "Emma Ragnarson", 9,  new String[] {"Soda", "Mints", "Chocolate"}, 5.0);
 		cars[itemCount] = ssCar5;
 		itemCount++;
+		ssCar5.book("Matthew","Eriks", new DateTime(2), 7);
 		ssCar5.book("Paula", "Kurniawan", new DateTime(1), 7);
 		ssCar5.completeBooking("Paula", "Kurniawan", 23);
 		
 		SilverServiceCar ssCar6 = new SilverServiceCar("ZBY789", "Honda", "Jazz", "Samuel Jones", 9,  new String[] {"Alcohol", "Chocolate", "Lollies"}, 8.0);
 		cars[itemCount] = ssCar6;
 		itemCount++;
+		ssCar6.book("Matthew","Eriks", new DateTime(2), 8);
 		ssCar6.book("Paula", "Kurniawan", new DateTime(1), 5);
 		ssCar6.completeBooking("Paula", "Kurniawan", 22);
 		
@@ -493,62 +495,70 @@ public class MiRideApplication
 	 * 				
 	 * 
 	 */
-	public Car[] searchAvailableCars()
-	{
-		int count = 0;
-		for (int i = 0; i < cars.length; i++)
-		{
-			for(int j =0; j < itemCount; i++)
-			{
-				//works when theres no bookings
-				if (availableCars[i] == null)
-				{
-					return cars;
-				}
-				else if(availableCars[i].equals(cars[j].getRegistrationNumber()))
-				{
-					//car not being added.		
-					availableCarsArray[count] = cars[j]; 
-					count++;	
-				}
-				else
-				{
-					System.out.println("There are no available cars to display.");
-					break;
-					//need to get out of method here to not return an empty availableCarsArray
-				}
-			}
-		}
-		return availableCarsArray;
-	}
+//	public Car[] searchAvailableCars()
+//	{
+//		int count = 0;
+//		for (int i = 0; i < availableCars.length; i++)
+//		{
+//			for (int j = 0; j < cars.length; j++)
+//			{
+//
+//				//works when theres no bookings
+//				if (availableCars[i] == null || cars[j] != null)
+//				{
+//					return cars;
+//				}
+//				else if(availableCars[i].equals(cars[j].getRegistrationNumber()))
+//				{
+//					//car not being added.trying to copy cars array into avialableCars array		
+//					availableCarsArray[count] = cars[j]; 
+//					count++;	
+//				}
+//				else
+//				{
+//					System.out.println("There are no available cars to display.");
+//					break;
+//					//need to get out of method here to not return an empty availableCarsArray
+//				}
+//			}
+//		}
+//		return availableCarsArray;
+//	}
 	
 	public String availableCarsDetails(DateTime userDate, String carType)
 	{
-		Car[] avCars = searchAvailableCars();
+		boolean check = false;
+//		Car[] cars = searchAvailableCars();
 		
-		for(int i = 0; i< avCars.length; i++)
+		for(int i = 0; i< cars.length; i++)
 		{
-			for(int j = 0; j< avCars[i].getCurrentBooking().length; j++)
-			{
 				//validates car is not booked on userDate, ie car must be free this day
-				if(avCars[i] != null && avCars[i].notCurrentlyBookedOnDate(userDate))
+			if(cars[i] != null && cars[i].notCurrentlyBookedOnDate(userDate))
+			{
+				//validates user input carType, date not in past and date not more than three days
+				if(carType.equals("SS") && cars[i] instanceof SilverServiceCar && 
+						DateUtilities.dateIsNotMoreThan3Days(userDate)) 
 				{
-					//validates user input carType, date not in past and date not more than three days
-					if(carType.equals("SS") && cars[i] instanceof SilverServiceCar && 
-							DateUtilities.dateIsNotInPast(userDate) && DateUtilities.dateIsNotMoreThan3Days(userDate)) 
-					{
-						return avCars[i].getDetails();
-					}
-					//validates user input carType, date not in past and date not more than seven days
-					else if (carType.equals("SD") && !(cars[i] instanceof SilverServiceCar) && 
-							DateUtilities.dateIsNotInPast(userDate) && DateUtilities.dateIsNotMoreThan7Days(userDate))
-					{
-						return avCars[i].getDetails();
-					}
+					System.out.println(cars[i].getDetails());
+					check = true;
+				}
+				//validates user input carType, date not in past and date not more than seven days
+				else if (carType.equals("SD") && !(cars[i] instanceof SilverServiceCar) && 
+						 DateUtilities.dateIsNotMoreThan7Days(userDate))
+				{
+					cars[i].getDetails();
+					check = true; 
 				}
 			}
 		}
-		return "There are no available cars on this date";
+		if(!check) 
+		{			
+			return "There are no available cars on this date";
+		} 
+		else
+		{
+			return "";
+		}
 	}
 	
 	/*user puts in SD/SS
@@ -596,7 +606,7 @@ public class MiRideApplication
 		{
 			for (int j=i+1; j < SS.length; j++)
 			{
-				if(SS[i]!= null)
+				if(SS[i]!= null && SS[j]!= null)
 				{
 					if(SS[i].getRegistrationNumber().compareTo(SS[j].getRegistrationNumber()) > 0)
 					{
@@ -610,7 +620,10 @@ public class MiRideApplication
 		
 		for(int i=0; i<SS.length; i++)
 		{
-			System.out.println(SS[i].getDetails());	
+			if(SS[i] != null)
+			{
+				System.out.println(SS[i].getDetails());	
+			}
 		}
 	}
 	
@@ -620,7 +633,7 @@ public class MiRideApplication
 		{
 			for (int j=i+1; j < SD.length; j++)
 			{
-				if(SD[i] != null)
+				if(SD[i] != null && SD[j]!=null)
 				{
 					if(SD[i].getRegistrationNumber().compareTo(SD[j].getRegistrationNumber()) > 0)
 					{
@@ -629,16 +642,15 @@ public class MiRideApplication
 						SD[j]= SDcar;				
 					}
 				}
-				else
-				{
-					break;
-				}
 			}		
 		}
 		
 		for(int i=0; i<SD.length; i++)
 		{
-			System.out.println(SD[i].getDetails());	
+			if (SD[i] != null)
+			{
+				System.out.println(SD[i].getDetails());
+			}
 		}
 	}
 	
@@ -648,7 +660,7 @@ public class MiRideApplication
 		{
 			for (int j=i+1; j < SS.length; j++)
 			{
-				if(SS[i]!= null)
+				if(SS[i]!= null && SS[j] != null)
 				{
 					if(SS[i].getRegistrationNumber().compareTo(SS[j].getRegistrationNumber()) < 0)
 					{
@@ -657,26 +669,25 @@ public class MiRideApplication
 						SS[j]= SScar;
 					}
 				}
-				else
-				{
-					break;
-				}
 			}
 		}
 		
 		for(int i=0; i<SS.length; i++)
 		{
+			if (SS[i]!= null)
+			{
 			System.out.println(SS[i].getDetails());	
+			}
 		}
 	}		
 
-	public void SDsortCarsD()
+	public void SDsortCarsD() //issue
 	{
 		for(int i =0; i<SD.length; i++)
 		{
 			for (int j=i+1; j < SD.length; j++)
 			{
-				if (SD[i]!= null)
+				if (SD[i]!= null && SD[j] != null)
 				{
 					if(SD[i].getRegistrationNumber().compareTo(SD[j].getRegistrationNumber()) < 0)
 					{
@@ -685,16 +696,15 @@ public class MiRideApplication
 						SD[j]= SDcar;
 					}
 				}
-				else
-				{
-					break;
-				}
 			}		
 		}
 		
 		for(int i=0; i<SD.length; i++)
 		{
-			System.out.println(SD[i].getDetails());	
+			if (SD[i]!= null)
+			{
+				System.out.println(SD[i].getDetails());	
+			}
 		}
 	}
 	
@@ -705,8 +715,6 @@ public class MiRideApplication
 			return "No cars have been added to the system.";
 		}
 		StringBuilder sb = new StringBuilder();
-//		sb.append("Summary of all cars: ");
-//		sb.append("\n");
 
 		//if it returns true, then it is SS
 		if (typeOfCar(carType))
@@ -731,10 +739,6 @@ public class MiRideApplication
 				SDsortCarsD();
 			}		
 		}
-//		for (int i = 0; i < itemCount; i++)
-//		{
-//			sb.append(cars[i].getDetails());
-//		}
 		return sb.toString();
 	}
 	

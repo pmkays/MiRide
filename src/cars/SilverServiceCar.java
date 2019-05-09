@@ -52,9 +52,9 @@ public class SilverServiceCar extends Car
 	@Override
 	public String getDetails()
 	{
-		String refreshmentsString = String.format("%-13s%s%n", "Refreshments: ", refreshmentsDisplay());
-		String currentBookingsString = String.format("%-13s%s%n", "Current Bookings: ", currentBookingsDisplay());
-		String pastBookingsString = String.format("%-13s%s%n", "Past Bookings: ", pastBookingsDisplay());
+		String refreshmentsString = String.format("%n%-13s%25s%n", "REFRESHMENTS AVAILABLE: ", refreshmentsDisplay());
+		String currentBookingsString = String.format("%-13s%s%n", "CURRENT BOOKINGS: ", currentBookingsDisplay());
+		String pastBookingsString = String.format("%-13s%s%n", "PAST BOOKINGS: ", pastBookingsDisplay());
 		return super.getDetails() + refreshmentsString + currentBookingsString + pastBookingsString;
 	
 	}
@@ -68,8 +68,8 @@ public class SilverServiceCar extends Car
 			if(refreshments[i]!=null)
 			{
 				count++;
-				str += String.format("%n%s", "Item " + 
-						count + "      " + refreshments[i]);
+				str += String.format("%n%-17s%s", "Item " + 
+						count, refreshments[i]);
 			}
 			else
 			{
@@ -77,7 +77,7 @@ public class SilverServiceCar extends Car
 			}
 		}
 		
-		return str + "\n____________________________________";
+		return str + "\n__________________________________________________________________";
 	}
 		
 
@@ -91,7 +91,7 @@ public class SilverServiceCar extends Car
 				str=(String.format("%n%s", getSpecificCurrentBooking(i).getDetails()));
 			}
 		}
-		return str + "\n____________________________________";
+		return str + "\n__________________________________________________________________";
 		
 	}
 	
@@ -105,14 +105,14 @@ public class SilverServiceCar extends Car
 				str=(String.format("%n%s", getSpecificPastBooking(i).getDetails()));
 			}
 		}
-		return  str + "\n____________________________________";
+		return  str + "\n_________________________________________________________________";
 	}
 	
 	@Override
 	public String toString()
 	{
-		//fix toString. 
-		return super.toString() + ":" + refreshmentsDisplay().toString() + ":" + getCurrentBooking().toString() + ":" + getPastBooking().toString();
+		//fix toString. create methodss to display smth 
+		return super.toString() + ":" + refreshmentsDisplay() + ":" + getCurrentBooking()+ ":" + getPastBooking();
 	}
 	
 	

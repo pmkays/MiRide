@@ -104,20 +104,21 @@ public class Booking {
 	
 	public String getDetails()
 	{
-		String bookingId = String.format("%-15s%s%n", "id: ", id.toUpperCase());
-		String bookingsFee = String.format("%-15s%.2f%n", "Booking Fee: ", 
+		String bookingId = String.format("%17s%-28s%s%n","", "id: ", id.toUpperCase());
+		String bookingsFee = String.format("%17s%-28s$%.2f%n","", "Booking Fee: ", 
 							 bookingFee);
-		String bookingPickUpDate = String.format("%-15s%s%n", "Pick up Date: ", 
+		String bookingPickUpDate = String.format("%17s%-28s%s%n", "","Pick up Date: ", 
 				dateBooked.getFormattedDate());
-		String bookingName = String.format("%-15s%s%n", "Name: ", firstName + " " + 
+		String bookingName = String.format("%17s%-28s%s%n", "","Name: ", firstName + " " + 
 							 lastName);
-		String bookingNumPassengers = String.format("%-15s%s%n", "Passengers: ", 
+		String bookingNumPassengers = String.format("%17s%-28s%s%n","", "Passengers: ", 
 									  numPassengers);
-		String bookingTravelled = String.format("%-15s%s%n", "Travelled: ", 
+		String bookingTravelled = String.format("%17s%-28s$%.2f%n","", "Travelled: ", 
                 				  kilometersTravelled);
-		String bookingTripFee = String.format("%-15s%s%n", "Trip Fee: ", 
+		String bookingTripFee = String.format("%17s%-28s$%.2f%n","", "Trip Fee: ", 
 				                tripFee);
-		String carId = String.format("%-15s%s%n", "Car Id: ", car.getRegistrationNumber());
+		String carId = String.format("%17s%-28s%s%n","", "Car Id: ", car.getRegistrationNumber());
+		
 		String bookingDetails = bookingId + bookingsFee + bookingPickUpDate + 
 								bookingName + bookingNumPassengers + 
 								bookingTravelled + bookingTripFee + carId;

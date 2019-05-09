@@ -168,14 +168,14 @@ public class Car
 	
 	public String getDetails()
 	{
-		String regNo = String.format("%-13s%s%n", "RegNo:", this.regNo);
-		String makeAndModel = String.format("%-13s%s%n", "Make & Model:", 
+		String regNo = String.format("%n%-17s%s", "RegNo:", this.regNo);
+		String makeAndModel = String.format("%n%-17s%s", "Make & Model:", 
 							  this.make + " " + this.model);
-		String driverName = String.format("%-13s%s%n", "Driver Name:", 
+		String driverName = String.format("%n%-17s%s", "Driver Name:", 
 				            this.driverName);
-		String passengerCapacity = String.format("%-13s%s%n", "Capacity:", 
+		String passengerCapacity = String.format("%n%-17s%d", "Capacity:", 
 				       			   this.passengerCapacity);
-		String isAvailable = String.format("%-13s%s%n%n", "Available:", available ? "YES" : "NO");
+		String isAvailable = String.format("%n%-17s%s%n", "Available:", available ? "YES" : "NO");
 		String carDetails = regNo + makeAndModel + driverName + passengerCapacity + 
 							isAvailable;
 		return carDetails;
@@ -419,7 +419,8 @@ public class Car
 			if (currentBookings[i] != null)
 			{
 				int days = DateTime.diffDays(date, currentBookings[i].getBookingDate());
-				if (days == 0)
+				//-1 if seeded car 0 if normal car
+				if (days == 0)  
 				{
 					return false;
 				}
