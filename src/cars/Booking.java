@@ -113,7 +113,7 @@ public class Booking {
 							 lastName);
 		String bookingNumPassengers = String.format("%17s%-28s%s%n","", "Passengers: ", 
 									  numPassengers);
-		String bookingTravelled = String.format("%17s%-28s$%.2f%n","", "Travelled: ", 
+		String bookingTravelled = String.format("%17s%-28s%.2f%n","", "Travelled: ", 
                 				  kilometersTravelled);
 		String bookingTripFee = String.format("%17s%-28s$%.2f%n","", "Trip Fee: ", 
 				                tripFee);

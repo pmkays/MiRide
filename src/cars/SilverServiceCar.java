@@ -53,10 +53,8 @@ public class SilverServiceCar extends Car
 	public String getDetails()
 	{
 		String refreshmentsString = String.format("%n%-13s%25s%n", "REFRESHMENTS AVAILABLE: ", refreshmentsDisplay());
-		String currentBookingsString = String.format("%-13s%s%n", "CURRENT BOOKINGS: ", currentBookingsDisplay());
-		String pastBookingsString = String.format("%-13s%s%n", "PAST BOOKINGS: ", pastBookingsDisplay());
-		return super.getDetails() + refreshmentsString + currentBookingsString + pastBookingsString;
-	
+		String getDetails = super.carDetails() + refreshmentsString + super.currentBookingsDisplay() + super.pastBookingsDisplay();	
+		return getDetails;
 	}
 	
 	private String refreshmentsDisplay()
@@ -81,38 +79,38 @@ public class SilverServiceCar extends Car
 	}
 		
 
-	private String currentBookingsDisplay()
-	{
-		String str="";
-		for(int i = 0; i < getCurrentBooking().length; i++)
-		{
-			if(getSpecificCurrentBooking(i)!=null)
-			{
-				str=(String.format("%n%s", getSpecificCurrentBooking(i).getDetails()));
-			}
-		}
-		return str + "\n__________________________________________________________________";
-		
-	}
-	
-	private String pastBookingsDisplay()
-	{
-		String str = "";
-		for(int i = 0; i < getCurrentBooking().length; i++)
-		{
-			if(getSpecificPastBooking(i)!=null)
-			{
-				str=(String.format("%n%s", getSpecificPastBooking(i).getDetails()));
-			}
-		}
-		return  str + "\n_________________________________________________________________";
-	}
+//	private String currentBookingsDisplay()
+//	{
+//		String str="";
+//		for(int i = 0; i < getCurrentBookings().length; i++)
+//		{
+//			if(getSpecificCurrentBooking(i)!=null)
+//			{
+//				str=(String.format("%n%s", getSpecificCurrentBooking(i).getDetails()));
+//			}
+//		}
+//		return str + "\n__________________________________________________________________";
+//		
+//	}
+//	
+//	private String pastBookingsDisplay()
+//	{
+//		String str = "";
+//		for(int i = 0; i < getCurrentBookings().length; i++)
+//		{
+//			if(getSpecificPastBooking(i)!=null)
+//			{
+//				str=(String.format("%n%s", getSpecificPastBooking(i).getDetails()));
+//			}
+//		}
+//		return  str + "\n_________________________________________________________________";
+//	}
 	
 	@Override
 	public String toString()
 	{
 		//fix toString. create methodss to display smth 
-		return super.toString() + ":" + refreshmentsDisplay() + ":" + getCurrentBooking()+ ":" + getPastBooking();
+		return super.toString() + ":" + refreshmentsDisplay() + ":" + getCurrentBookings()+ ":" + getPastBooking();
 	}
 	
 	

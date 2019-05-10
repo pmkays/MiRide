@@ -168,6 +168,18 @@ public class Car
 	
 	public String getDetails()
 	{
+
+		return carDetails() + currentBookingsDisplay() + pastBookingsDisplay();
+	}
+	
+	public String toString()
+	{
+		return regNo + ":" + make + ":" + model + ":" + driverName + 
+				":" + passengerCapacity + ":" + (available ? "YES" : "NO");
+	}
+	
+	protected String carDetails()
+	{
 		String regNo = String.format("%n%-17s%s", "RegNo:", this.regNo);
 		String makeAndModel = String.format("%n%-17s%s", "Make & Model:", 
 							  this.make + " " + this.model);
@@ -181,11 +193,34 @@ public class Car
 		return carDetails;
 	}
 	
-	public String toString()
+	protected String currentBookingsDisplay()
 	{
-		return regNo + ":" + make + ":" + model + ":" + driverName + 
-				":" + passengerCapacity + ":" + (available ? "YES" : "NO");
+		String str="";
+		for(int i = 0; i < currentBookings.length; i++)
+		{
+			if(currentBookings[i]!=null)
+			{
+				str=(String.format("%n%s", currentBookings[i].getDetails()));
+			}
+		}
+		return String.format("%n%-13s%s%n", "CURRENT BOOKINGS: ", str) + "\n__________________________________________________________________";
+		
 	}
+	
+	protected String pastBookingsDisplay()
+	{
+		String str = "";
+		for(int i = 0; i < pastBookings.length; i++)
+		{
+			if(pastBookings[i]!=null)
+			{
+				str=(String.format("%n%s", pastBookings[i].getDetails()));
+			}
+		}
+		return  String.format("%n%-13s%s%n", "PAST BOOKINGS: ", str) + "\n_________________________________________________________________";
+	}
+	
+	
 
 	/*
 	 * Human readable presentation of the state of the car.
@@ -418,7 +453,7 @@ public class Car
 		{
 			if (currentBookings[i] != null)
 			{
-				int days = DateTime.diffDays(date, currentBookings[i].getBookingDate());
+				int days = DateTime.actualDiffDays(date, currentBookings[i].getBookingDate());
 				//-1 if seeded car 0 if normal car
 				if (days == 0)  
 				{
@@ -460,7 +495,7 @@ public class Car
 		}
 	}
 	
-	public Booking[] getCurrentBooking()
+	public Booking[] getCurrentBookings()
 	{
 		return currentBookings;
 	}
@@ -484,4 +519,5 @@ public class Car
 	{
 		this.bookingFee= bookingFee;
 	}
+
 }
