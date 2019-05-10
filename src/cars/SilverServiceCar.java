@@ -78,39 +78,27 @@ public class SilverServiceCar extends Car
 		return str + "\n__________________________________________________________________";
 	}
 		
-
-//	private String currentBookingsDisplay()
-//	{
-//		String str="";
-//		for(int i = 0; i < getCurrentBookings().length; i++)
-//		{
-//			if(getSpecificCurrentBooking(i)!=null)
-//			{
-//				str=(String.format("%n%s", getSpecificCurrentBooking(i).getDetails()));
-//			}
-//		}
-//		return str + "\n__________________________________________________________________";
-//		
-//	}
-//	
-//	private String pastBookingsDisplay()
-//	{
-//		String str = "";
-//		for(int i = 0; i < getCurrentBookings().length; i++)
-//		{
-//			if(getSpecificPastBooking(i)!=null)
-//			{
-//				str=(String.format("%n%s", getSpecificPastBooking(i).getDetails()));
-//			}
-//		}
-//		return  str + "\n_________________________________________________________________";
-//	}
-	
 	@Override
 	public String toString()
 	{
-		//fix toString. create methodss to display smth 
-		return super.toString() + ":" + refreshmentsDisplay() + ":" + getCurrentBookings()+ ":" + getPastBooking();
+		return super.carToString() + refreshmentsToString() + super.currentBookingsToString() + super.pastBookingsToString();
+	}
+	
+	private String refreshmentsToString()
+	{
+		String[] refreshmentsToStringArray = new String[10];
+		String refreshmentsFinal = "";
+		int count =0;
+		for(int i = 0; i<refreshments.length; i++)
+		{
+			if(refreshments[i]!=null)
+			{
+				count++;
+				refreshmentsToStringArray[i] = ":Item " + count + " " + refreshments[i] +"";
+				refreshmentsFinal += refreshmentsToStringArray[i] ;
+			}
+		} 
+		return refreshmentsFinal;
 	}
 	
 	

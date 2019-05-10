@@ -473,11 +473,6 @@ public class MiRideApplication
 //		}	
 //	}
 	
-	public boolean availableCarsDateValidation()
-	{
-		return true; //how to validate if a car is available? take out code segment from this.book method?
-	}
-	
 	/*run through cars array
 	 * run through availableCar string array
 	 * if any of the regNo froma vailableCars String array matchers with a regNo of a car in cars array
@@ -528,7 +523,6 @@ public class MiRideApplication
 	public String availableCarsDetails(DateTime userDate, String carType)
 	{
 		boolean check = false;
-//		Car[] cars = searchAvailableCars();
 		
 		for(int i = 0; i< cars.length; i++)
 		{
@@ -547,14 +541,13 @@ public class MiRideApplication
 						 DateUtilities.dateIsNotMoreThan7Days(userDate))
 				{
 					System.out.println(cars[i].getDetails());
-//					cars[i].getDetails();
 					check = true; 
 				}
 			}
 		}
 		if(!check) 
 		{			
-			return "There are no available cars on this date";
+			return "Error - No cars were found on this date.";
 		} 
 		else
 		{
@@ -577,7 +570,6 @@ public class MiRideApplication
 	
 	public boolean typeOfCar (String carType)
 	{
-		//make two counters??
 		boolean check = true;
 		int count = 0;
 		for(int i =0; i < cars.length; i++)
@@ -717,7 +709,6 @@ public class MiRideApplication
 		}
 		StringBuilder sb = new StringBuilder();
 
-		//if it returns true, then it is SS
 		if (typeOfCar(carType))
 		{
 			if(sortOrder.equals("A"))

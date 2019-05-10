@@ -35,7 +35,8 @@ public class Menu
 			if (input.length() != MENU_ITEM_LENGTH)
 			{
 				System.out.println("Error - selection must be two characters!");
-			} else
+			} 
+			else
 			{
 				System.out.println();
 
@@ -73,7 +74,6 @@ public class Menu
 					System.out.println("Please try Again...");
 				}
 			}
-
 		} while (choice != "EX");
 	}
 
@@ -334,9 +334,8 @@ public class Menu
 		int year = Integer.parseInt(dateEntered.substring(6));
 		DateTime dateRequired = new DateTime(day, month, year);
 		
-		String getDetails = application.availableCarsDetails(dateRequired, carType);
-		System.out.println(getDetails);
-		
+		String result = application.availableCarsDetails(dateRequired, carType);
+		System.out.println(result);
 	}
 	
 	public void displayAllCars()

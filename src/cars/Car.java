@@ -172,12 +172,6 @@ public class Car
 		return carDetails() + currentBookingsDisplay() + pastBookingsDisplay();
 	}
 	
-	public String toString()
-	{
-		return regNo + ":" + make + ":" + model + ":" + driverName + 
-				":" + passengerCapacity + ":" + (available ? "YES" : "NO");
-	}
-	
 	protected String carDetails()
 	{
 		String regNo = String.format("%n%-17s%s", "RegNo:", this.regNo);
@@ -196,29 +190,85 @@ public class Car
 	protected String currentBookingsDisplay()
 	{
 		String str="";
+		boolean check = false;
 		for(int i = 0; i < currentBookings.length; i++)
 		{
 			if(currentBookings[i]!=null)
 			{
-				str=(String.format("%n%s", currentBookings[i].getDetails()));
+				str+=(String.format("%n%s", currentBookings[i].getDetails()));
+				check = true;
 			}
 		}
-		return String.format("%n%-13s%s%n", "CURRENT BOOKINGS: ", str) + "\n__________________________________________________________________";
+		if(check)
+		{
+			return String.format("%n%-13s%s%n", "CURRENT BOOKINGS: ", str) + "\n__________________________________________________________________";
+		}
+		else
+		{
+			return "";
+		}
 		
 	}
 	
 	protected String pastBookingsDisplay()
 	{
+		boolean check = false;
 		String str = "";
 		for(int i = 0; i < pastBookings.length; i++)
 		{
 			if(pastBookings[i]!=null)
 			{
-				str=(String.format("%n%s", pastBookings[i].getDetails()));
+				str+=(String.format("%n%s", pastBookings[i].getDetails()));
+				check= true;
 			}
 		}
-		return  String.format("%n%-13s%s%n", "PAST BOOKINGS: ", str) + "\n_________________________________________________________________";
+		if(check)
+		{
+			return  String.format("%n%-13s%s%n", "PAST BOOKINGS: ", str) + "\n_________________________________________________________________";
+		}
+		else
+		{
+			return "";
+		}
 	}
+	
+	public String toString()
+	{
+		return carToString() + currentBookingsToString() + pastBookingsToString();
+	}
+	
+	protected String carToString()
+	{
+		return regNo + ":" + make + ":" + model + ":" + driverName + 
+				":" + passengerCapacity + ":" + (available ? "YES" : "NO");
+	}
+	
+	protected String currentBookingsToString()
+	{
+		String str = "";
+		for(int i =0; i<currentBookings.length; i++)
+		{
+			if(currentBookings[i]!= null)
+			{
+				str = "|" + currentBookings[i].toString();
+			}
+		}
+		return str;	
+	}
+	
+	protected String pastBookingsToString()
+	{
+		String str = "";
+		for(int i =0; i<pastBookings.length; i++)
+		{
+			if(pastBookings[i]!= null)
+			{
+				str = "|" + pastBookings[i].toString();
+			}
+		}
+		return str;	
+	}
+	
 	
 	
 
