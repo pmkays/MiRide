@@ -325,7 +325,7 @@ public class Menu
 	public void searchAvailableCars()
 	{
 		System.out.println("Enter type (SD/SS): ");
-		String carType = console.nextLine();
+		String carType = console.nextLine().toUpperCase();
 		
 		System.out.println("Enter date: ");
 		String dateEntered = console.nextLine();

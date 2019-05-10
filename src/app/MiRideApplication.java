@@ -546,7 +546,8 @@ public class MiRideApplication
 				else if (carType.equals("SD") && !(cars[i] instanceof SilverServiceCar) && 
 						 DateUtilities.dateIsNotMoreThan7Days(userDate))
 				{
-					cars[i].getDetails();
+					System.out.println(cars[i].getDetails());
+//					cars[i].getDetails();
 					check = true; 
 				}
 			}
