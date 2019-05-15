@@ -286,8 +286,6 @@ public class MiRideApplication
 		toyota.book("Alan", "Smith", new DateTime(3), 3);
 		toyota.book("Carmel", "Brownbill", new DateTime(4), 7);
 		toyota.book("Paul", "Scarlett", new DateTime(5), 7);
-		toyota.book("Paul", "Scarlett", new DateTime(6), 7);
-		toyota.book("Paul", "Scarlett", new DateTime(7), 7);
 		
 		// 1 car booked five times (not available)
 		Car rover = new Car("ROV465", "Honda", "Rover", "Jonathon Ryss Meyers", 7);
@@ -489,6 +487,16 @@ public class MiRideApplication
 		return "";
 	}
 	
+	public boolean dateValidation(String date) throws InvalidBooking
+	{
+		final int NUM_OF_DATE = 10;
+		if(date.length() != NUM_OF_DATE)
+		{
+			throw new InvalidBooking("sd");
+		}
+		
+		return true;
+	}
 	
 	
 	/*run through cars array
@@ -572,6 +580,8 @@ public class MiRideApplication
 			return "";
 		}
 	}
+	
+	
 	
 	/*user puts in SD/SS
 	 * make checkwhichCarmethod 
@@ -725,6 +735,7 @@ public class MiRideApplication
 		{
 			return "No cars have been added to the system.";
 		}
+
 		StringBuilder sb = new StringBuilder();
 
 		if (typeOfCar(carType))
@@ -748,6 +759,15 @@ public class MiRideApplication
 			{
 				SDsortCarsD();
 			}		
+		}
+		
+		if (carType.equals("SS") && SS[0] == null)
+		{
+			return "No Silver Service Cars have been added to the system.";
+		}
+		else if (carType.equals("SD") && SD[0] ==null)
+		{
+			return "No Standard Cars have been added to the system.";
 		}
 		return sb.toString();
 	}

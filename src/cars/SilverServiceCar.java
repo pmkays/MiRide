@@ -54,7 +54,7 @@ public class SilverServiceCar extends Car
 		if (!dateIsValid3Days(required))
 		{
 			booked = false;
-			throw new InvalidBooking("The date is in the past or greater than 3 days in advanced");
+			throw new InvalidBooking("The date is invalid.");
 		}
 		
 		super.book(firstName, lastName, required, numPassengers);
@@ -243,7 +243,7 @@ public class SilverServiceCar extends Car
 		final int MINIMUM_AMOUNT = 3;
 		if(refreshments.length < MINIMUM_AMOUNT)
 		{
-			throw new InvalidRefreshments("There must be at least three refreshments entered. Please try again.);
+			throw new InvalidRefreshments("There must be at least three refreshments entered. Please try again.");
 		}	
 	}
 	
@@ -264,4 +264,5 @@ public class SilverServiceCar extends Car
 			}
 		}
 	}
+	
 }

@@ -72,7 +72,7 @@ public class Car
 		
 		if(!dateIsValid(required))
 		{
-			throw new InvalidBooking("The date is in the past or greater than 7 days in advanced");
+			throw new InvalidBooking("The date is invalid.");
 		}
 //		if(!DateUtilities.dateIsNotInPast(required))
 //		{
