@@ -3,6 +3,8 @@ package app;
 import java.util.Scanner;
 import utilities.DateTime;
 import utilities.DateUtilities;
+import utilities.InvalidBooking;
+import utilities.InvalidRefreshments;
 
 /*
  * Class:		Menu
@@ -21,7 +23,7 @@ public class Menu
 	/*
 	 * Runs the menu in a loop until the user decides to exit the system.
 	 */
-	public void run()
+	public void run() throws InvalidBooking, InvalidRefreshments
 	{
 		final int MENU_ITEM_LENGTH = 2;
 		String input;
@@ -80,7 +82,7 @@ public class Menu
 	/*
 	 * Creates cars for use in the system available or booking.
 	 */
-	private void createCar()
+	private void createCar() throws InvalidRefreshments
 	{
 		String id = "", make, model, driverName;
 		int numPassengers = 0;
@@ -124,6 +126,9 @@ public class Menu
 				if(validationResult) //checks bookingFee >= 3.0 in application class which calls SScar class. 
 				{
 					refreshmentsArray = application.splitRefreshments(refreshments);
+					//check refreshments here before creating a car
+					application.validateRefreshments(id, make, model, driverName, numPassengers, refreshmentsArray, SDbookingFee);
+					
 					String SScarRegistrationNumber = application.createSSCar(id, make, model, driverName, numPassengers, SDbookingFee, refreshmentsArray);
 					System.out.println(SScarRegistrationNumber);
 				}
@@ -143,7 +148,7 @@ public class Menu
 	/*
 	 * Book a car by finding available cars for a specified date.
 	 */
-	private boolean book()
+	private boolean book() throws InvalidBooking
 	{
 		System.out.println("Enter date car required: ");
 		System.out.println("format DD/MM/YYYY)");
@@ -153,11 +158,11 @@ public class Menu
 		int year = Integer.parseInt(dateEntered.substring(6));
 		DateTime dateRequired = new DateTime(day, month, year);
 		
-		if(!DateUtilities.dateIsNotInPast(dateRequired) || !DateUtilities.dateIsNotMoreThan7Days(dateRequired))
-		{
-			System.out.println("Date is invalid, must be within the coming week.");
-			return false;
-		}
+//		if(!DateUtilities.dateIsNotInPast(dateRequired) || !DateUtilities.dateIsNotMoreThan7Days(dateRequired))
+//		{
+//			System.out.println("Date is invalid, must be within the coming week.");
+//			return false;
+//		}
 		
 		
 		String[] availableCars = application.book(dateRequired);

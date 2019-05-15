@@ -4,12 +4,13 @@ import java.util.ArrayList;
 
 import utilities.DateTime;
 import utilities.DateUtilities;
+import utilities.InvalidBooking;
 import utilities.MiRidesUtilities;
 
 /*
  * Class:		Car
  * Description:	The class represents a car in a ride sharing system. 
- * Author:		Rodney Cocker
+ * Author:		Rodney Cocker & Paula Kurniawan
  */
 public class Car
 {
@@ -66,19 +67,35 @@ public class Car
 	 * Booking six cars
 	 */
 
-	public boolean book(String firstName, String lastName, DateTime required, int numPassengers)
+	public boolean book(String firstName, String lastName, DateTime required, int numPassengers) throws InvalidBooking
 	{
+		
+		if(!dateIsValid(required))
+		{
+			throw new InvalidBooking("The date is in the past or greater than 7 days in advanced");
+		}
+//		if(!DateUtilities.dateIsNotInPast(required))
+//		{
+//			throw new InvalidBooking("The date is in the past");
+//		}
+		
 		boolean booked = false;
 		// Does car have five bookings
 		available = bookingAvailable();
+		
+		if (!available)
+		{
+			throw new InvalidBooking("No more bookings can be made as there are already 5 current bookings.");
+		}
+		
 		boolean dateAvailable = notCurrentlyBookedOnDate(required);
 		// Date is within range, not in past and within the next week
-		boolean dateValid = dateIsValid(required);
+		//boolean dateValid = dateIsValid(required);
 		// Number of passengers does not exceed the passenger capacity and is not zero.
 		boolean validPassengerNumber = numberOfPassengersIsValid(numPassengers);
 
 		// Booking is permissible
-		if (available && dateAvailable && dateValid && validPassengerNumber)
+		if (available && dateAvailable && validPassengerNumber)
 		{
 			tripFee = bookingFee;
 			Booking booking = new Booking(firstName, lastName, required, numPassengers, this);
@@ -472,7 +489,7 @@ public class Car
 	 * Indicates if a booking spot is available. If it is then the index of the
 	 * available spot is assigned to bookingSpotFree.
 	 */
-	private boolean bookingAvailable()
+	private boolean bookingAvailable() throws InvalidBooking
 	{
 		for (int i = 0; i < currentBookings.length; i++)
 		{

@@ -3,6 +3,8 @@ package cars;
 import utilities.DateTime;
 
 import utilities.DateUtilities;
+import utilities.InvalidBooking;
+import utilities.InvalidRefreshments;
 
 /*
  * Class:		SilverServiceCar
@@ -13,7 +15,7 @@ import utilities.DateUtilities;
 
 public class SilverServiceCar extends Car
 {
-	private String[] refreshments;
+	private String[] refreshments = new String[10];
 	private double bookingFee;
 	
 	public SilverServiceCar(String regNo, String make, String model, String driverName, int passengerCapacity, String[] refreshments, double bookingFee)
@@ -38,14 +40,24 @@ public class SilverServiceCar extends Car
 	}
 	
 	@Override
-	public boolean book(String firstName, String lastName, DateTime required, int numPassengers)
+	public boolean book(String firstName, String lastName, DateTime required, int numPassengers) throws InvalidBooking
 	{
-		boolean booked = false;
-		if (dateIsValid3Days(required))
+//		boolean booked = false;
+//		if (!dateIsValid3Days(required))
+//		{
+//			super.book(firstName, lastName, required, numPassengers);
+//			booked = true;
+//		}
+//		return booked;
+		
+		boolean booked = true;
+		if (!dateIsValid3Days(required))
 		{
-			super.book(firstName, lastName, required, numPassengers);
-			booked = true;
+			booked = false;
+			throw new InvalidBooking("The date is in the past or greater than 3 days in advanced");
 		}
+		
+		super.book(firstName, lastName, required, numPassengers);
 		return booked;
 	}
 	
@@ -208,5 +220,53 @@ public class SilverServiceCar extends Car
 		{
 			return checkBookingFee;
 		}	
+	}
+	
+//	public boolean checkRefreshmentsArray(String[] refreshments) throws InvalidRefreshments
+//	{
+//		boolean empty = false;
+//		for (int i =0; i<refreshments.length; i++)
+//		{
+//			if(refreshments[i]!=null)
+//			{
+//				if(i ==2)
+//				{
+//					empty = true;
+//					throw new InvalidRefreshments("There must be at least three refreshments entered");
+//				}
+//			}
+//		}
+//		return empty;
+//	}
+	public boolean checkRefreshmentsArray(String[] refreshments) throws InvalidRefreshments
+	{
+		boolean empty = false;
+		final int MINIMUM_AMOUNT = 3;
+		if(refreshments.length < MINIMUM_AMOUNT)
+		{
+			empty = true;
+			throw new InvalidRefreshments("There must be at least three refreshments entered");
+		}	
+		return empty; 
+	}
+	
+	public boolean checkRefreshmentsDuplicate(String[] refreshments) throws InvalidRefreshments
+	{
+		boolean duplicate = false; 
+		for(int i =0; i< refreshments.length; i++)
+		{
+			for (int j =i + 1; j< refreshments.length; j++)
+			{
+				if(refreshments[i] != null && refreshments[j] != null)
+				{
+					if (refreshments[i].equals(refreshments[j]))
+					{
+						duplicate = true; 
+						throw new InvalidRefreshments("There are duplicate refreshments");
+					}
+				}
+			}
+		}
+		return duplicate;
 	}
 }

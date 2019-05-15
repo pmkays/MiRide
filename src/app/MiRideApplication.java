@@ -4,6 +4,8 @@ import cars.Car;
 import cars.SilverServiceCar;
 import utilities.DateTime;
 import utilities.DateUtilities;
+import utilities.InvalidBooking;
+import utilities.InvalidRefreshments;
 import utilities.MiRidesUtilities;
 
 /*
@@ -17,7 +19,7 @@ public class MiRideApplication
 	private Car[] cars = new Car[15];
 	private int itemCount = 0;
 	private String[] availableCars = new String[12];
-	private String[] refreshmentsArray;
+	private String[] refreshmentsArray = new String[10];
 	private Car[] availableCarsArray;	
 	private SilverServiceCar car;
 	Car[] SS = new Car[15]; 
@@ -103,49 +105,57 @@ public class MiRideApplication
 		Car car = getCarById(registrationNumber);
 		if(car != null)
         {
-			if(car.book(firstName, lastName, required, numPassengers))
+			try
 			{
+				if(car.book(firstName, lastName, required, numPassengers))
+				{
 
-				String message = "Thank you for your booking. \n" + car.getDriverName() 
-		        + " will pick you up on " + required.getFormattedDate() + ". \n"
-				+ "Your booking reference is: " + car.getBookingID(firstName, lastName, required);
-				return message;
-			}
-			else
+					String message = "Thank you for your booking. \n" + car.getDriverName() 
+				    + " will pick you up on " + required.getFormattedDate() + ". \n"
+					+ "Your booking reference is: " + car.getBookingID(firstName, lastName, required);
+					return message;
+				}
+//				else
+//				{
+//					String message = "Booking could not be completed.";
+//					return message;
+//				}
+			} 
+			catch (InvalidBooking e)
 			{
-				String message = "Booking could not be completed.";
-				return message;
+				return e.getMessage();
 			}
-        }
-        else
-        {
-            return "Car with registration number: " + registrationNumber + " was not found.";
-        }
+        }       
+		return "Car with registration number: " + registrationNumber + " was not found.";
 	}
 	
-	public String SSbook(String firstName, String lastName, DateTime required, int numPassengers, String registrationNumber)
+	public String SSbook(String firstName, String lastName, DateTime required, int numPassengers, String registrationNumber) throws InvalidBooking
 	{
 		SilverServiceCar car = getSSCarById(registrationNumber);
 		if(car != null)
-        {
-			if(car.book(firstName, lastName, required, numPassengers))
+		{
+			try
 			{
+				if(car.book(firstName, lastName, required, numPassengers))
+				{
 
-				String message = "Thank you for your booking. \n" + car.getDriverName() 
-		        + " will pick you up on " + required.getFormattedDate() + ". \n"
-				+ "Your booking reference is: " + car.getBookingID(firstName, lastName, required);
-				return message;
-			}
-			else
+					String message = "Thank you for your booking. \n" + car.getDriverName() 
+				    + " will pick you up on " + required.getFormattedDate() + ". \n"
+					+ "Your booking reference is: " + car.getBookingID(firstName, lastName, required);
+					return message;
+				}
+				else
+				{
+					String message = "Booking could not be completed.";
+					return message;
+				}
+			} 
+			catch (InvalidBooking e)
 			{
-				String message = "Booking could not be completed.";
-				return message;
+				return e.getMessage();
 			}
-        }
-        else
-        {
-            return "Car with registration number: " + registrationNumber + " was not found.";
-        }
+        }       
+		return "Car with registration number: " + registrationNumber + " was not found.";
 	}
 
 	
@@ -236,7 +246,7 @@ public class MiRideApplication
 		return "Error: The car could not be located.";
 	}
 	
-	public boolean seedData()
+	public boolean seedData() throws InvalidBooking
 	{
 		for(int i = 0; i < cars.length; i++)
 		{
@@ -453,25 +463,33 @@ public class MiRideApplication
 		return refreshmentsArray;
 	}
 	
+	/*
+	 * check refreshments here; refreshments have been split use refreshments array input from menu
+	 * validate in SSCar class. 
+	 * 		Make method that checks if array[2] is empty or not. return false if not empty. generate exception. 
+	 * 		Make method that cycles through refreshments to check if there are identical object using equals. return false if not identical. generate excecption
+	 * In method in SSCar that puts it together : if (!checkatleast3) generate exception 
+	 * else if (!checkifrefreshmentsareequal) generate exception.
+	 * application calls on   
+	 */
+	
+	public String validateRefreshments (String id, String make, String model, String driverName, int numPassengers, String[] refreshments, double bookingFee) throws InvalidRefreshments
+	{
+		try
+		{
+			SilverServiceCar SScar = new SilverServiceCar(id, make, model, driverName, numPassengers, refreshments, bookingFee);
+			boolean empty = SScar.checkRefreshmentsArray(refreshments);
+			boolean duplicate = SScar.checkRefreshmentsDuplicate(refreshments);
+		}
+		catch (InvalidRefreshments e)
+		{
+			e.getMessage();
+		}
+		
+		return "";
+	}
 	
 	
-//	public String searchAvailableCars(DateTime userDate, String carChoice)
-//	{
-//		if(!availableCarsDateValidation())
-//		{
-//			return "Error - no cars were found on this date";
-//		}
-//		else if (carChoice.equals("SD"))
-//		{
-//			//if object in array dont have double value???
-//			//cycle through array adn print that objectl; how to differentiate SD and SS
-//		}
-//		else
-//		{
-//			//if obejcts in array have refreshments/standardbookingfee
-//			//cyclethrough that array and print that object
-//		}	
-//	}
 	
 	/*run through cars array
 	 * run through availableCar string array
