@@ -127,10 +127,13 @@ public class Menu
 				{
 					refreshmentsArray = application.splitRefreshments(refreshments);
 					//check refreshments here before creating a car
-					application.validateRefreshments(id, make, model, driverName, numPassengers, refreshmentsArray, SDbookingFee);
-					
-					String SScarRegistrationNumber = application.createSSCar(id, make, model, driverName, numPassengers, SDbookingFee, refreshmentsArray);
-					System.out.println(SScarRegistrationNumber);
+					String validRefreshments = application.validateRefreshments(id, make, model, driverName, numPassengers, refreshmentsArray, SDbookingFee);
+					System.out.println(validRefreshments);
+					if(validRefreshments.equals(""))
+					{
+						String SScarRegistrationNumber = application.createSSCar(id, make, model, driverName, numPassengers, SDbookingFee, refreshmentsArray);
+						System.out.println(SScarRegistrationNumber);
+					}
 				}
 				else
 				{

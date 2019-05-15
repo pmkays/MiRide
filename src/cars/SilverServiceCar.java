@@ -238,35 +238,30 @@ public class SilverServiceCar extends Car
 //		}
 //		return empty;
 //	}
-	public boolean checkRefreshmentsArray(String[] refreshments) throws InvalidRefreshments
+	public void checkRefreshmentsArray(String[] refreshments) throws InvalidRefreshments
 	{
-		boolean empty = false;
 		final int MINIMUM_AMOUNT = 3;
 		if(refreshments.length < MINIMUM_AMOUNT)
 		{
-			empty = true;
-			throw new InvalidRefreshments("There must be at least three refreshments entered");
+			throw new InvalidRefreshments("There must be at least three refreshments entered. Please try again.);
 		}	
-		return empty; 
 	}
 	
-	public boolean checkRefreshmentsDuplicate(String[] refreshments) throws InvalidRefreshments
+	public void checkRefreshmentsDuplicate(String[] refreshments) throws InvalidRefreshments
 	{
-		boolean duplicate = false; 
-		for(int i =0; i< refreshments.length; i++)
+		for(int i = 0; i< refreshments.length; i++)
 		{
-			for (int j =i + 1; j< refreshments.length; j++)
+			for (int j = i + 1; j< refreshments.length; j++)
 			{
 				if(refreshments[i] != null && refreshments[j] != null)
 				{
 					if (refreshments[i].equals(refreshments[j]))
 					{
-						duplicate = true; 
-						throw new InvalidRefreshments("There are duplicate refreshments");
+
+						throw new InvalidRefreshments("There are duplicate refreshments. Please try again.");
 					}
 				}
 			}
 		}
-		return duplicate;
 	}
 }

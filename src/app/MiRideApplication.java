@@ -478,12 +478,12 @@ public class MiRideApplication
 		try
 		{
 			SilverServiceCar SScar = new SilverServiceCar(id, make, model, driverName, numPassengers, refreshments, bookingFee);
-			boolean empty = SScar.checkRefreshmentsArray(refreshments);
-			boolean duplicate = SScar.checkRefreshmentsDuplicate(refreshments);
+			SScar.checkRefreshmentsArray(refreshments);
+			SScar.checkRefreshmentsDuplicate(refreshments);
 		}
 		catch (InvalidRefreshments e)
 		{
-			e.getMessage();
+			return e.getMessage();
 		}
 		
 		return "";
