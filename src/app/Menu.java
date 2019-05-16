@@ -149,9 +149,9 @@ public class Menu
 				}
 			}
 		}
-		catch(NumberFormatException e)
+		catch (NumberFormatException | IndexOutOfBoundsException e)
 		{
-			System.out.println("ERROR - Number Format Exception " + e.getMessage().toLowerCase());
+			System.out.println(e.toString());
 		}
 	}
 
@@ -207,9 +207,9 @@ public class Menu
 			}
 //			return true;
 		}
-		catch (NumberFormatException e)
+		catch (NumberFormatException | IndexOutOfBoundsException e)
 		{
-			System.out.println("Error - Number Format Exception " + e.getMessage());
+			System.out.println(e.toString());
 		}
 	}
 		
@@ -261,9 +261,9 @@ public class Menu
 				}
 			}
 		}
-		catch (NumberFormatException e)
+		catch (NumberFormatException | IndexOutOfBoundsException e)
 		{
-			System.out.println("Number Format Exception " + e.getMessage().toLowerCase());
+			System.out.println(e.toString());
 		}
 		
 	}
@@ -363,22 +363,29 @@ public class Menu
 			String result = application.availableCarsDetails(dateRequired, carType);
 			System.out.println(result);
 		}
-		catch (NumberFormatException e)
+		catch (NumberFormatException | IndexOutOfBoundsException e)
 		{
-			System.out.println("Number Format Exception " + e.getMessage().toLowerCase());
+			System.out.println(e.toString());
 		}
 	}
 	
 	public void displayAllCars()
 	{
-		System.out.println("Enter Type (SD/SS): ");
-		String carType = console.nextLine().toUpperCase(); 
-		
-		System.out.println("Enter Sort Order: ");
-		String sortOrder = console.nextLine().toUpperCase();
-		
-		String result = application.displayAllBookings(carType, sortOrder);
-		System.out.println(result);
+		try
+		{
+			System.out.println("Enter Type (SD/SS): ");
+			String carType = console.nextLine().toUpperCase(); 
+			
+			System.out.println("Enter Sort Order: ");
+			String sortOrder = console.nextLine().toUpperCase();
+			
+			String result = application.displayAllBookings(carType, sortOrder);
+			System.out.println(result);
+		}
+		catch (NumberFormatException | IndexOutOfBoundsException e)
+		{
+			System.out.println(e.toString());
+		}
 	}
 
 	/*

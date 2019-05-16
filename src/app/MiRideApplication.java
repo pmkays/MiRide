@@ -564,7 +564,7 @@ public class MiRideApplication
 				}
 				//validates user input carType, date not in past and date not more than seven days
 				else if (carType.equals("SD") && !(cars[i] instanceof SilverServiceCar) && 
-						 DateUtilities.dateIsNotMoreThan7Days(userDate))
+						 DateUtilities.dateIsNotMoreThan7Days(userDate) && cars[i].getAvailability())
 				{
 					System.out.println(cars[i].getDetails());
 					check = true; 
@@ -697,7 +697,7 @@ public class MiRideApplication
 		{
 			if (SS[i]!= null)
 			{
-			System.out.println(SS[i].getDetails());	
+				System.out.println(SS[i].getDetails());	
 			}
 		}
 	}		

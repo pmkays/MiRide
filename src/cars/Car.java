@@ -81,7 +81,6 @@ public class Car
 		
 		boolean booked = false;
 		// Does car have five bookings
-		available = bookingAvailable();
 		
 		if (!available)
 		{
@@ -103,6 +102,7 @@ public class Car
 			bookingSpotAvailable++;
 			booked = true;
 		}
+		available = bookingAvailable();
 		return booked;
 	}
 
@@ -206,19 +206,19 @@ public class Car
 	
 	protected String currentBookingsDisplay()
 	{
-		String str="";
+		String bookings="";
 		boolean check = false;
 		for(int i = 0; i < currentBookings.length; i++)
 		{
 			if(currentBookings[i]!=null)
 			{
-				str+=(String.format("%n%s", currentBookings[i].getDetails()));
+				bookings+=(String.format("%n%s", currentBookings[i].getDetails()));
 				check = true;
 			}
 		}
 		if(check)
 		{
-			return String.format("%n%-13s%s%n", "CURRENT BOOKINGS: ", str) + "\n__________________________________________________________________";
+			return String.format("%n%-13s%s%n", "CURRENT BOOKINGS: ", bookings) + "\n__________________________________________________________________";
 		}
 		else
 		{
@@ -230,18 +230,18 @@ public class Car
 	protected String pastBookingsDisplay()
 	{
 		boolean check = false;
-		String str = "";
+		String bookings = "";
 		for(int i = 0; i < pastBookings.length; i++)
 		{
 			if(pastBookings[i]!=null)
 			{
-				str+=(String.format("%n%s", pastBookings[i].getDetails()));
+				bookings+=(String.format("%n%s", pastBookings[i].getDetails()));
 				check= true;
 			}
 		}
 		if(check)
 		{
-			return  String.format("%n%-13s%s%n", "PAST BOOKINGS: ", str) + "\n_________________________________________________________________";
+			return  String.format("%n%-13s%s%n", "PAST BOOKINGS: ", bookings) + "\n_________________________________________________________________";
 		}
 		else
 		{
@@ -262,28 +262,28 @@ public class Car
 	
 	protected String currentBookingsToString()
 	{
-		String str = "";
+		String bookings = "";
 		for(int i =0; i<currentBookings.length; i++)
 		{
 			if(currentBookings[i]!= null)
 			{
-				str = "|" + currentBookings[i].toString();
+				bookings += "|" + currentBookings[i].toString();
 			}
 		}
-		return str;	
+		return bookings;	
 	}
 	
 	protected String pastBookingsToString()
 	{
-		String str = "";
+		String bookings = "";
 		for(int i =0; i<pastBookings.length; i++)
 		{
 			if(pastBookings[i]!= null)
 			{
-				str = "|" + pastBookings[i].toString();
+				bookings += "|" + pastBookings[i].toString();
 			}
 		}
-		return str;	
+		return bookings;	
 	}
 	
 	
@@ -489,20 +489,20 @@ public class Car
 	 * Indicates if a booking spot is available. If it is then the index of the
 	 * available spot is assigned to bookingSpotFree.
 	 */
-	private boolean bookingAvailable() throws InvalidBooking
+	public boolean bookingAvailable()
 	{
 		for (int i = 0; i < currentBookings.length; i++)
 		{
 			if (currentBookings[i] == null)
 			{
-				if(i == currentBookings.length - 1)
-				{
-					available = false;
-				}
-				else
-				{
-					available = true;
-				}
+//				if(i == currentBookings.length - 1)
+//				{
+//					available = false;
+//				}
+//				else
+//				{
+//					available = true;
+//				}
 				bookingSpotAvailable = i;
 				return true;
 			}
@@ -521,7 +521,6 @@ public class Car
 			if (currentBookings[i] != null)
 			{
 				int days = DateTime.actualDiffDays(date, currentBookings[i].getBookingDate());
-				//-1 if seeded car 0 if normal car
 				if (days == 0)  
 				{
 					return false;
@@ -585,6 +584,11 @@ public class Car
 	protected void setBookingFee(double bookingFee)
 	{
 		this.bookingFee= bookingFee;
+	}
+	
+	public boolean getAvailability()
+	{
+		return this.available;
 	}
 
 }
