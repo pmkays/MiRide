@@ -1,5 +1,6 @@
 package app;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import utilities.DateTime;
 import utilities.DateUtilities;
@@ -69,14 +70,17 @@ public class Menu
 					break;
 				case "EX":
 					choice = "EX";
+					application.writingFile();
 					System.out.println("Exiting Program ... Goodbye!");
 					break;
 				default:
 					System.out.println("Error, invalid option selected!");
 					System.out.println("Please try Again...");
+					break;
 				}
 			}
-		} while (choice != "EX");
+		} 
+		while (!choice.equals("EX"));
 	}
 
 	/*
@@ -113,10 +117,12 @@ public class Menu
 	
 				if (!result && serviceType.equals(("SD")))
 				{
-					String SDcarRegistrationNumber = application.createCar(id, make, model, driverName, numPassengers);
+					String SDcarRegistrationNumber = application.createCar
+							(id, make, model, driverName, numPassengers);
 					System.out.println(SDcarRegistrationNumber);
 				} 
-				else if (!result && serviceType.equals(("SS"))) //check if regNo doesn't already exist + regNo is six characters + validates passenger capacity already
+				//check if regNo doesn't already exist + regNo is six characters + validates passenger capacity already
+				else if (!result && serviceType.equals(("SS"))) 
 				{
 					System.out.println("Enter standard fee:");
 					double SDbookingFee = console.nextDouble();
@@ -129,11 +135,15 @@ public class Menu
 					{
 						refreshmentsArray = application.splitRefreshments(refreshments);
 						//check refreshments here before creating a car
-						String validRefreshments = application.validateRefreshments(id, make, model, driverName, numPassengers, refreshmentsArray, SDbookingFee);
+						String validRefreshments = application.validateRefreshments
+								(id, make, model, driverName, numPassengers, refreshmentsArray, SDbookingFee);
+						
 						System.out.println(validRefreshments);
+						
 						if(validRefreshments.equals(""))
 						{
-							String SScarRegistrationNumber = application.createSSCar(id, make, model, driverName, numPassengers, SDbookingFee, refreshmentsArray);
+							String SScarRegistrationNumber = application.createSSCar
+									(id, make, model, driverName, numPassengers, SDbookingFee, refreshmentsArray);
 							System.out.println(SScarRegistrationNumber);
 						}
 					}
@@ -149,7 +159,7 @@ public class Menu
 				}
 			}
 		}
-		catch (NumberFormatException | IndexOutOfBoundsException e)
+		catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException e)
 		{
 			System.out.println(e.toString());
 		}
@@ -207,7 +217,7 @@ public class Menu
 			}
 //			return true;
 		}
-		catch (NumberFormatException | IndexOutOfBoundsException e)
+		catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException e)
 		{
 			System.out.println(e.toString());
 		}
@@ -261,7 +271,7 @@ public class Menu
 				}
 			}
 		}
-		catch (NumberFormatException | IndexOutOfBoundsException e)
+		catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException e)
 		{
 			System.out.println(e.toString());
 		}
@@ -363,7 +373,7 @@ public class Menu
 			String result = application.availableCarsDetails(dateRequired, carType);
 			System.out.println(result);
 		}
-		catch (NumberFormatException | IndexOutOfBoundsException e)
+		catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException e)
 		{
 			System.out.println(e.toString());
 		}
@@ -382,7 +392,7 @@ public class Menu
 			String result = application.displayAllBookings(carType, sortOrder);
 			System.out.println(result);
 		}
-		catch (NumberFormatException | IndexOutOfBoundsException e)
+		catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException e)
 		{
 			System.out.println(e.toString());
 		}

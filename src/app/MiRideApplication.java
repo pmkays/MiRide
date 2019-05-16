@@ -1,5 +1,7 @@
 package app;
 
+import java.io.*;
+
 import cars.Car;
 import cars.SilverServiceCar;
 import utilities.DateTime;
@@ -770,6 +772,31 @@ public class MiRideApplication
 			return "No Standard Cars have been added to the system.";
 		}
 		return sb.toString();
+	}
+	
+	public void writingFile()
+	{
+		File file = new File("Cars.txt");
+		PrintWriter output = null;
+		try
+		{
+			output = new PrintWriter(new FileOutputStream(file, true));
+			
+			for(int i =0; i<cars.length; i++)
+			{
+				if (cars[i] != null)
+				{
+					output.println(cars[i].toString());
+				}
+			}
+			System.out.println("Writing successful!");
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		
+		output.close();
 	}
 	
 }
