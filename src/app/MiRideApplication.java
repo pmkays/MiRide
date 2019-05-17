@@ -821,8 +821,8 @@ public class MiRideApplication
 		try
 		{
 			input = new Scanner(new File("Cars.txt"));
-			addAllCarsPersistance(input);
-
+			addAllCarsPersistance(input);	
+			input.close();
 		}
 		catch (FileNotFoundException e)
 		{
@@ -830,32 +830,32 @@ public class MiRideApplication
 			{
 				input = new Scanner(new File("Cars_Backup.txt"));
 				System.out.println("Data was located from a backup file!");
-				addAllCarsPersistance(input);
-				
+				addAllCarsPersistance(input);	
+				input.close();
 			}
 			catch (FileNotFoundException error)
 			{
-				System.out.println("no Booking data was loaded. ");
+				System.out.println("No booking data was loaded! ");
 			}
 		}
-		
-		input.close();
 	}
 	
 	public void addAllCarsPersistance(Scanner input)
 	{
 		int count =0;
 		final int INDEX_OF_REFRESHMENTS = 6;
-		String refreshments = "";
+		double fee = 0.0;
 		String[] carArray = new String[15];
 		String[] details = new String[10];
-		String[] refreshmentsArray = new String[5];
-		double fee = 0.0;
+
 		input.useDelimiter("\n");
 		while (input.hasNextLine())
 		{
 			carArray[count] = input.nextLine();	
-			count++;
+			if(count < carArray.length-1)
+			{
+				count++;
+			}
 		}
 		
 		for(int i =0; i<carArray.length; i++)
@@ -870,11 +870,16 @@ public class MiRideApplication
 				int passengerCapacity = Integer.parseInt(details[4]);
 				String availability = (details[5]);
 				cars[itemCount]= new Car(id, make, model, name, passengerCapacity);
-				itemCount++;	
+				if(itemCount < cars.length - 1)
+				{
+					itemCount++;
+				}	
 			}
 			else if (carArray[i]!=null && carArray[i].contains("Item"))
 			{
-				details = carArray[i].split(":");		
+				int counter = 0;
+				details = carArray[i].split(":");	
+				String[] refreshmentsArray = new String[5];
 				String id = details[0];
 				String make = details[1];
 				String model = details[2];
@@ -882,21 +887,25 @@ public class MiRideApplication
 				int passengerCapacity = Integer.parseInt(details[4]);
 				String availability = (details[5]);
 				
-				for (i = INDEX_OF_REFRESHMENTS; i < details.length; i++)
+				for (int j = INDEX_OF_REFRESHMENTS; j < details.length; j++)
 				{
-					if (details[i]!= null && details[i].contains("Item"))
+					if (details[j]!= null && details[j].contains("Item"))
 					{
-						refreshments += details[i] + ",";
+						refreshmentsArray[counter] = details[j].substring(7);
+						counter++;
+						
 					}
-					else if (details[i]!= null && details[i].contains("."))
+					else if (details[j]!= null && details[j].contains("."))
 					{
-						fee = Double.parseDouble(details[i]);
+						fee = Double.parseDouble(details[j]);
 					}
-					
-					refreshmentsArray = splitRefreshments(refreshments);
-					cars[itemCount]= new SilverServiceCar(id, make, model, name, passengerCapacity, refreshmentsArray, fee);
-					itemCount++;	
 				}			
+				cars[itemCount]= new SilverServiceCar(id, make, model, name, passengerCapacity, refreshmentsArray, fee);			
+				if(itemCount < cars.length -1)
+				{
+					itemCount++;
+				}
+				counter = 0;
 			}
 		}
 	}

@@ -64,8 +64,9 @@ public class SilverServiceCar extends Car
 	@Override
 	public String getDetails()
 	{
+		String bookingFee = String.format("%-17s%s%n", "Standard Fee:", this.bookingFee);
 		String refreshmentsString = String.format("%n%-13s%25s%n", "REFRESHMENTS AVAILABLE: ", refreshmentsDisplay());
-		String getDetails = super.carDetails() + refreshmentsString + super.currentBookingsDisplay() + super.pastBookingsDisplay();	
+		String getDetails = super.carDetails() + bookingFee + refreshmentsString + super.currentBookingsDisplay() + super.pastBookingsDisplay();	
 		return getDetails;
 	}
 	
@@ -93,7 +94,7 @@ public class SilverServiceCar extends Car
 	@Override
 	public String toString()
 	{
-		return super.carToString() + refreshmentsToString() + super.currentBookingsToString() + super.pastBookingsToString();
+		return super.carToString() + bookingFee + refreshmentsToString() + super.currentBookingsToString() + super.pastBookingsToString();
 	}
 	
 	@Override
