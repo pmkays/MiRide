@@ -10,7 +10,7 @@ import utilities.InvalidRefreshments;
 /*
  * Class:		Menu
  * Description:	The class a menu and is used to interact with the user. 
- * Author:		Rodney Cocker
+ * Author:		Rodney Cocker && Paula Kurniawan. 
  */
 public class Menu
 {
@@ -56,7 +56,6 @@ public class Menu
 					completeBooking();
 					break;
 				case "DA":
-//					System.out.println(application.displayAllBookings());
 					displayAllCars();
 					break;
 				case "SS":
@@ -98,7 +97,6 @@ public class Menu
 			id = promptUserForRegNo();
 			if (id.length() != 0)
 			{
-				// Get details required for creating a car.
 				System.out.print("Enter Make: ");
 				make = console.nextLine();
 	
@@ -122,7 +120,7 @@ public class Menu
 							(id, make, model, driverName, numPassengers);
 					System.out.println(SDcarRegistrationNumber);
 				} 
-				//check if regNo doesn't already exist + regNo is six characters + validates passenger capacity already
+				//check if regNo doesn't already exist + regNo is six characters + validates passenger capacity
 				else if (!result && serviceType.equals(("SS"))) 
 				{
 					System.out.println("Enter standard fee:");
@@ -132,7 +130,7 @@ public class Menu
 					String refreshments = console.nextLine();
 					
 					boolean validationResult = application.SSvalidation(SDbookingFee, id);
-					if(validationResult) //checks bookingFee >= 3.0 in application class which calls SScar class. 
+					if(validationResult) //checks bookingFee >= 3.0 in application class 
 					{
 						refreshmentsArray = application.splitRefreshments(refreshments);
 						//check refreshments here before creating a car
@@ -216,7 +214,6 @@ public class Menu
 			{
 				System.out.println("There are no available cars on this date.");
 			}
-//			return true;
 		}
 		catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException e)
 		{
@@ -236,7 +233,6 @@ public class Menu
 			System.out.print("Enter Registration or Booking Date:");
 			String response = console.nextLine().toUpperCase();
 			
-			// User entered a booking date
 			if (response.contains("/"))
 			{
 				System.out.print("Enter First Name:");
@@ -283,7 +279,6 @@ public class Menu
 	{
 		int numPassengers = 0;
 		boolean validPassengerNumbers = false;
-		// By pass user input validation.
 		if (!testingWithValidation)
 		{
 			return Integer.parseInt(console.nextLine());
@@ -331,8 +326,6 @@ public class Menu
 				boolean exists = application.checkIfCarExists(regNo);
 				if(exists)
 				{
-					// Empty string means the menu will not try to process
-					// the registration number
 					System.out.println("Error: Reg Number already exists");
 					return "";
 				}
@@ -356,7 +349,19 @@ public class Menu
 		}
 	}
 	
-	//
+	/* ALGORITHM to search for available cars using user input
+	 * 
+	 * BEGIN:
+	 * 		PROMPT user for type of car (SD/SS)
+	 * 		ASSIGN variable to user input of type of car
+	 * 		PROMPT user for enter date
+	 * 		ASSIGN variable to user input of date
+	 * 		SEPARATE the date entered and convert to integers
+	 * 		MAKE a new DateTime object and pass through the converted integers
+	 * 		ASSIGN a string variable to the returned string from a validation method in application class
+	 * 		PRINT that string variable
+	 * END
+	 */
 	public void searchAvailableCars()
 	{
 		try
@@ -364,7 +369,7 @@ public class Menu
 			System.out.println("Enter type (SD/SS): ");
 			String carType = console.nextLine().toUpperCase();
 			
-			System.out.println("Enter date: ");
+			System.out.println("Enter date:");
 			String dateEntered = console.nextLine();
 			int day = Integer.parseInt(dateEntered.substring(0, 2));
 			int month = Integer.parseInt(dateEntered.substring(3, 5));

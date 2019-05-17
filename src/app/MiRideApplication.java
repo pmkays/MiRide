@@ -15,7 +15,7 @@ import utilities.MiRidesUtilities;
  * Class:			MiRideApplication
  * Description:		The system manager the manages the 
  *              	collection of data. 
- * Author:			Rodney Cocker
+ * Author:			Rodney Cocker && Paula Kurniawan. 
  */
 public class MiRideApplication
 {
@@ -31,11 +31,6 @@ public class MiRideApplication
 	SilverServiceCar SScar;
 	File file;
 	File fileBackup;
-
-	public MiRideApplication()
-	{
-		//seedData();
-	}
 	
 	public String createCar(String id, String make, String model, String driverName, int numPassengers) 
 	{
@@ -47,12 +42,14 @@ public class MiRideApplication
 		if(!checkIfCarExists(id)) {
 			cars[itemCount] = new Car(id, make, model, driverName, numPassengers);
 			itemCount++;
-			return "New Car added successfully for registion number: " + cars[itemCount-1].getRegistrationNumber();
+			return "New Car added successfully for registion number: " 
+			+ cars[itemCount-1].getRegistrationNumber();
 		}
 		return "Error: Already exists in the system.";
 	}
 	
-	public String createSSCar(String id, String make, String model, String driverName, int numPassengers, double bookingFee, String[] refreshments) 
+	public String createSSCar(String id, String make, String model, String driverName, 
+			int numPassengers, double bookingFee, String[] refreshments) 
 	{
 		String validId = isValidId(id);
 		if(isValidId(id).contains("Error:"))
@@ -61,9 +58,11 @@ public class MiRideApplication
 		}
 		if(!checkIfCarExists(id)) 
 		{
-			cars[itemCount] = new SilverServiceCar(id, make, model, driverName, numPassengers, refreshments, bookingFee);
+			cars[itemCount] = new SilverServiceCar(id, make, model, driverName, 
+					numPassengers, refreshments, bookingFee);
 			itemCount++;
-			return "New Car added successfully for registration number: " + cars[itemCount-1].getRegistrationNumber();
+			return "New Car added successfully for registration number: " 
+			+ cars[itemCount-1].getRegistrationNumber();
 		}
 		return "Error: Already exists in the system.";
 	}
@@ -97,7 +96,8 @@ public class MiRideApplication
 			{
 				if(!cars[i].isCarBookedOnDate(dateRequired))
 				{
-					availableCars[availableCarsIndex] = availableCarsIndex + 1 + ". " + cars[i].getRegistrationNumber();
+					availableCars[availableCarsIndex] = availableCarsIndex + 1 + 
+							". " + cars[i].getRegistrationNumber();
 					availableCarsIndex++;
 				}
 			}
@@ -105,7 +105,8 @@ public class MiRideApplication
 		return availableCars;
 	}
 	
-	public String book(String firstName, String lastName, DateTime required, int numPassengers, String registrationNumber)
+	public String book(String firstName, String lastName, DateTime required, 
+			int numPassengers, String registrationNumber) throws InvalidBooking
 	{
 		Car car = getCarById(registrationNumber);
 		if(car != null)
@@ -120,11 +121,11 @@ public class MiRideApplication
 					+ "Your booking reference is: " + car.getBookingID(firstName, lastName, required);
 					return message;
 				}
-//				else
-//				{
-//					String message = "Booking could not be completed.";
-//					return message;
-//				}
+				else
+				{
+					String message = "Booking could not be completed.";
+					return message;
+				}
 			} 
 			catch (InvalidBooking e)
 			{
@@ -134,7 +135,8 @@ public class MiRideApplication
 		return "Car with registration number: " + registrationNumber + " was not found.";
 	}
 	
-	public String SSbook(String firstName, String lastName, DateTime required, int numPassengers, String registrationNumber) throws InvalidBooking
+	public String SSbook(String firstName, String lastName, DateTime required, 
+			int numPassengers, String registrationNumber) throws InvalidBooking
 	{
 		SilverServiceCar car = getSSCarById(registrationNumber);
 		if(car != null)
@@ -164,7 +166,8 @@ public class MiRideApplication
 	}
 
 	
-	public String completeBooking(String firstName, String lastName, DateTime dateOfBooking, double kilometers)
+	public String completeBooking(String firstName, String lastName, 
+			DateTime dateOfBooking, double kilometers)
 	{
 		String result = "";
 		
@@ -182,7 +185,8 @@ public class MiRideApplication
 		return "Booking not found.";
 	}
 	
-	public String completeBooking(String firstName, String lastName, String registrationNumber, double kilometers)
+	public String completeBooking(String firstName, String lastName, 
+			String registrationNumber, double kilometers)
 	{
 		String carNotFound = "Car not found";
 		Car car = null;
@@ -263,12 +267,10 @@ public class MiRideApplication
 		// 2 cars not booked
 		Car honda = new Car("SIM194", "Honda", "Accord Euro", "Henry Cavill", 5);
 		cars[itemCount] = honda;
-//		honda.book("Craig", "Cocker", new DateTime(1), 3);
 		itemCount++;
 		
 		Car lexus = new Car("LEX666", "Lexus", "M1", "Angela Landsbury", 3);
 		cars[itemCount] = lexus;
-//		lexus.book("Craig", "Cocker", new DateTime(1), 3);
 		itemCount++;
 		
 		// 2 cars booked
@@ -292,44 +294,50 @@ public class MiRideApplication
 		toyota.book("Carmel", "Brownbill", new DateTime(4), 7);
 		toyota.book("Paul", "Scarlett", new DateTime(5), 7);
 		
-		// 1 car booked five times (not available)
 		Car rover = new Car("ROV465", "Honda", "Rover", "Jonathon Ryss Meyers", 7);
 		cars[itemCount] = rover;
 		itemCount++;
+		//Will be displayed in current bookings of getDetails
 		rover.book("Rodney", "Cocker", new DateTime(1), 3);
-		//rover.completeBooking("Rodney", "Cocker", 75);
+		//Will be displayed in past bookings of getDetails
 		DateTime inTwoDays = new DateTime(2);
 		rover.book("Rodney", "Cocker", inTwoDays, 3);
 		rover.completeBooking("Rodney", "Cocker", inTwoDays,75);
 
 		
-		SilverServiceCar ssCar1 = new SilverServiceCar("AAA123", "Toyota", "Camry", "Ben Gibbard", 7,  new String[] {"Soda", "Mints", "Chocolate"}, 9.0);
+		SilverServiceCar ssCar1 = new SilverServiceCar("AAA123", "Toyota", "Camry", 
+				"Ben Gibbard", 7,  new String[] {"Soda", "Mints", "Chocolate"}, 9.0);
 		cars[itemCount] = ssCar1;
 		itemCount++;
 		
-		SilverServiceCar ssCar2 = new SilverServiceCar("BHS678", "Mini", "Cooper", "Andy Hull", 6,  new String[] {"Fruit", "Alcohol", "Crackers"}, 4.0);
+		SilverServiceCar ssCar2 = new SilverServiceCar("BHS678", "Mini", "Cooper", 
+				"Andy Hull", 6,  new String[] {"Fruit", "Alcohol", "Crackers"}, 4.0);
 		cars[itemCount] = ssCar2;
 		itemCount++;
 		
-		SilverServiceCar ssCar3 = new SilverServiceCar("TJH903", "Honda", "Odyssey", "John Frusciante", 8,  new String[] {"Lollies", "Water", "Juice"}, 6.0);
+		SilverServiceCar ssCar3 = new SilverServiceCar("TJH903", "Honda", "Odyssey", 
+				"John Frusciante", 8,  new String[] {"Lollies", "Water", "Juice"}, 6.0);
 		cars[itemCount] = ssCar3;
 		itemCount++;
 		ssCar3.book("John", "Richards", new DateTime(1), 3);
 		
 		
-		SilverServiceCar ssCar4 = new SilverServiceCar("BEK502", "Suzuki", "Swift", "Gina Esposito", 7,  new String[] {"Salad", "Smoothie", "Soda"}, 7.0);
+		SilverServiceCar ssCar4 = new SilverServiceCar("BEK502", "Suzuki", "Swift", 
+				"Gina Esposito", 7,  new String[] {"Salad", "Smoothie", "Soda"}, 7.0);
 		cars[itemCount] = ssCar4;
 		itemCount++;
 		ssCar4.book("John", "Richards", new DateTime(1), 6);
 		
-		SilverServiceCar ssCar5 = new SilverServiceCar("KLI695", "Volkswagen", "Polo", "Emma Ragnarson", 9,  new String[] {"Soda", "Mints", "Chocolate"}, 5.0);
+		SilverServiceCar ssCar5 = new SilverServiceCar("KLI695", "Volkswagen", "Polo", 
+				"Emma Ragnarson", 9,  new String[] {"Soda", "Mints", "Chocolate"}, 5.0);
 		cars[itemCount] = ssCar5;
 		itemCount++;
 		ssCar5.book("Matthew","Eriks", new DateTime(2), 7);
 		ssCar5.book("Paula", "Kurniawan", new DateTime(1), 7);
 		ssCar5.completeBooking("Paula", "Kurniawan", 23);
 		
-		SilverServiceCar ssCar6 = new SilverServiceCar("ZBY789", "Honda", "Jazz", "Samuel Jones", 9,  new String[] {"Alcohol", "Chocolate", "Lollies"}, 8.0);
+		SilverServiceCar ssCar6 = new SilverServiceCar("ZBY789", "Honda", "Jazz", 
+				"Samuel Jones", 9,  new String[] {"Alcohol", "Chocolate", "Lollies"}, 8.0);
 		cars[itemCount] = ssCar6;
 		itemCount++;
 		ssCar6.book("Matthew","Eriks", new DateTime(2), 8);
@@ -339,19 +347,6 @@ public class MiRideApplication
 		return true;
 
 	}
-
-	/*displayallBookings sort from passengercapacity
-	 * int count = 0
-	 * loop through cars array using one integer
-	 * loop through cars arary using another integer
-	 * if cars isnt null
-	 * 	if cars[i].passengercapacity < cars[j].passengercapacity
-	 * 	then cars[i] = cars[j] (how do i put object of car j into that array index) 
-	 * 
-	 * another for loop to print out the new array sorting. 
-	 * cars[i].getDetails
-	 * 
-	 */
 
 	public String displayBooking(String id, String seatId)
 	{
@@ -442,53 +437,40 @@ public class MiRideApplication
 		return car;
 	}
 	
-	/*if call bookingFee validates, loop through cars array. 
-	 * if cars array is not empty,  add that SS car in. 
-	 * 
-	 * 
-	 */
-	
-	public boolean SSvalidation(double bookingFee, String regNo)//need to check for fee validation 
+	//used for fee validation
+	public boolean SSvalidation(double bookingFee, String regNo)
 	{
-		boolean bf = false; 
+		boolean check = false; 
 		SilverServiceCar car = new SilverServiceCar(regNo, null, null, null, 0, new String[] {}, bookingFee);
 
 		 if(car.feeValidation(bookingFee))
 		 {
-			 bf = true;
+			 check = true;
 		 }
-		 return bf;
+		 return check;
 	}
 	
+	//splits the refreshments array by a user inputed comma. 
 	public String[] splitRefreshments(String refreshments)
 	{
 		refreshmentsArray = refreshments.split(",");
 		return refreshmentsArray;
 	}
 	
-	/*
-	 * check refreshments here; refreshments have been split use refreshments array input from menu
-	 * validate in SSCar class. 
-	 * 		Make method that checks if array[2] is empty or not. return false if not empty. generate exception. 
-	 * 		Make method that cycles through refreshments to check if there are identical object using equals. return false if not identical. generate excecption
-	 * In method in SSCar that puts it together : if (!checkatleast3) generate exception 
-	 * else if (!checkifrefreshmentsareequal) generate exception.
-	 * application calls on   
-	 */
-	
-	public String validateRefreshments (String id, String make, String model, String driverName, int numPassengers, String[] refreshments, double bookingFee) throws InvalidRefreshments
+	public String validateRefreshments (String id, String make, String model, String driverName, 
+			int numPassengers, String[] refreshments, double bookingFee) throws InvalidRefreshments
 	{
 		try
 		{
-			SilverServiceCar SScar = new SilverServiceCar(id, make, model, driverName, numPassengers, refreshments, bookingFee);
+			SilverServiceCar SScar = new SilverServiceCar(id, make, model, driverName, 
+					numPassengers, refreshments, bookingFee);
 			SScar.checkRefreshmentsArray(refreshments);
 			SScar.checkRefreshmentsDuplicate(refreshments);
 		}
 		catch (InvalidRefreshments e)
 		{
 			return e.getMessage();
-		}
-		
+		}	
 		return "";
 	}
 	
@@ -502,72 +484,27 @@ public class MiRideApplication
 		
 		return true;
 	}
-	
-	
-	/*run through cars array
-	 * run through availableCar string array
-	 * if any of the regNo froma vailableCars String array matchers with a regNo of a car in cars array
-	 * put that car in an availableCar Car array, bc obvs that car is available
-	 * 
-	 * this String method (DateTime object, String carType)
-	 * first validate the date user puts in
-	 * if the userinput date doesnt matches the date of a car's booking in avialablecar.getSpecificCurrentBooking(i) array  
-	 * then loop through availableCars array (Now the date has been validated and car options has been limited to userinput's date)		
-	 * 		then validate SD/SS
-	 * 			if user puts in SS && cars[i] instanceof SilverServiceCar
-	 * 				return availableCars[i].getDetails
-	 * 			else if (user puts in SD && !cars[i] instanceof SilverServiceCar)
-	 * 				return avialableCars[i].getDetails
-	 * 				
-	 * 
-	 */
-//	public Car[] searchAvailableCars()
-//	{
-//		int count = 0;
-//		for (int i = 0; i < availableCars.length; i++)
-//		{
-//			for (int j = 0; j < cars.length; j++)
-//			{
-//
-//				//works when theres no bookings
-//				if (availableCars[i] == null || cars[j] != null)
-//				{
-//					return cars;
-//				}
-//				else if(availableCars[i].equals(cars[j].getRegistrationNumber()))
-//				{
-//					//car not being added.trying to copy cars array into avialableCars array		
-//					availableCarsArray[count] = cars[j]; 
-//					count++;	
-//				}
-//				else
-//				{
-//					System.out.println("There are no available cars to display.");
-//					break;
-//					//need to get out of method here to not return an empty availableCarsArray
-//				}
-//			}
-//		}
-//		return availableCarsArray;
-//	}
-	
+
 	public String availableCarsDetails(DateTime userDate, String carType)
 	{
 		boolean check = false;
 		
 		for(int i = 0; i< cars.length; i++)
 		{
-				//validates car is not booked on userDate, ie car must be free this day
+				//validates car is not booked on userDate, i.e car must be free this day
 			if(cars[i] != null && cars[i].notCurrentlyBookedOnDate(userDate))
 			{
-				//validates user input carType, date not in past and date not more than three days
+				//validates user input carType and date not more than three days
 				if(carType.equals("SS") && cars[i] instanceof SilverServiceCar && 
 						DateUtilities.dateIsNotMoreThan3Days(userDate)) 
 				{
 					System.out.println(cars[i].getDetails());
 					check = true;
 				}
-				//validates user input carType, date not in past and date not more than seven days
+				/*
+				 * validates user input carType, date not more than seven days and
+				 * there are less than 5 current bookings
+				 */
 				else if (carType.equals("SD") && !(cars[i] instanceof SilverServiceCar) && 
 						 DateUtilities.dateIsNotMoreThan7Days(userDate) && cars[i].getAvailability())
 				{
@@ -588,17 +525,23 @@ public class MiRideApplication
 	
 	
 	
-	/*user puts in SD/SS
-	 * make checkwhichCarmethod 
-	 * 	checks if car is SS or SD. 
-	 * 	if instance of SS, put car in SS array
-	 * 	if not instance of SS, put car in SD array
-	 * putting in array makes easier to sort through
+	/* ALGORITHM to check which type of Car was chosen (determined by returned boolean values) 
+	 * and to populate individual SDCars and SSCars array
 	 * 
-	 * Then calls sort method. 
-	 * make sort method (pass in A/D) 
-	 * 
-	 * general outline:
+	 * BEGIN:
+	 * 		ASSIGN boolean value to true 
+	 * 		LOOP through cars array
+	 * 			IF cars array is not empty
+	 * 				IF user input is "SS" and it is a SSCar 
+	 * 					THEN add that car into an array of just SSCars
+	 * 				ELSE IF user input is "SD" and it is !SScar 
+	 * 					THEN add that car into an array of just SDCars 
+	 * 					ASSIGN boolean value to false
+	 * 				END IF
+	 * 			END IF
+	 * 		RETURN boolean value where true represents "SS" has been chosen and 
+	 * 			   false represents "SD" has been chosen
+	 * END 
 	 */
 	
 	public boolean typeOfCar (String carType)
@@ -625,6 +568,27 @@ public class MiRideApplication
 		}
 		return check;
 	}
+	
+	/* ALGORITHM to sort SSCars' regNos ascending using bubble sorting; other sorting algorithms 
+	 * implemented follow a similar structure. 
+	 * 
+	 * BEGIN: 
+	 * 		LOOP through SSCars array using integer variable e.g. i. 
+	 * 			LOOP through SSCars array using another integer variable + 1 e.g. j = i+1
+	 * 				IF SSCars array is not null
+	 * 					IF SS[i]'s initial character of regNO is higher than SS[j] when compared to 
+	 * 						ASSIGN temp variable to that SSCar[i]
+	 * 						ASSIGN SS[i] to SS[j] 
+	 * 						ASSIGN SS[j] to temp variable to finish swapping once 
+	 * 					END IF
+	 * 				END IF
+	 * 
+	 * 		LOOP through SSCar array
+	 * 			IF SSCar array is not null 
+	 * 				PRINT the details of that SSCar
+	 * 			END IF
+	 * END
+	 */
 	
 	public void SSsortCarsA()
 	{
@@ -707,7 +671,7 @@ public class MiRideApplication
 		}
 	}		
 
-	public void SDsortCarsD() //issue
+	public void SDsortCarsD()
 	{
 		for(int i =0; i<SD.length; i++)
 		{
@@ -900,7 +864,8 @@ public class MiRideApplication
 						fee = Double.parseDouble(details[j]);
 					}
 				}			
-				cars[itemCount]= new SilverServiceCar(id, make, model, name, passengerCapacity, refreshmentsArray, fee);			
+				cars[itemCount]= new SilverServiceCar(id, make, model, name, 
+						passengerCapacity, refreshmentsArray, fee);			
 				if(itemCount < cars.length -1)
 				{
 					itemCount++;
