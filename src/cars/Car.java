@@ -254,7 +254,7 @@ public class Car
 		return carToString() + currentBookingsToString() + pastBookingsToString();
 	}
 	
-	protected String carToString()
+	public String carToString()
 	{
 		return regNo + ":" + make + ":" + model + ":" + driverName + 
 				":" + passengerCapacity + ":" + (available ? "YES" : "NO");
@@ -400,6 +400,7 @@ public class Car
 		tripFee = 0;
 		return result;
 	}
+	
 
 	/*
 	 * Gets the position in the array of a booking based on a name and date. Returns

@@ -96,7 +96,14 @@ public class SilverServiceCar extends Car
 		return super.carToString() + refreshmentsToString() + super.currentBookingsToString() + super.pastBookingsToString();
 	}
 	
-	private String refreshmentsToString()
+	@Override
+	public String carToString()
+	{
+		String SScarPersistance = refreshmentsToString() + ":" + bookingFee;
+		return super.carToString() + SScarPersistance; 
+	}
+	
+	public String refreshmentsToString()
 	{
 		String[] refreshmentsToStringArray = new String[10];
 		String refreshmentsFinal = "";
@@ -108,6 +115,19 @@ public class SilverServiceCar extends Car
 				count++;
 				refreshmentsToStringArray[i] = ":Item " + count + " " + refreshments[i] +"";
 				refreshmentsFinal += refreshmentsToStringArray[i] ;
+			}
+		} 
+		return refreshmentsFinal;
+	}
+	
+	public String refreshmentsToStringPersistance()
+	{
+		String refreshmentsFinal = "";
+		for(int i = 0; i<refreshments.length; i++)
+		{
+			if(refreshments[i]!=null)
+			{
+				refreshmentsFinal += refreshments[i] ;
 			}
 		} 
 		return refreshmentsFinal;
@@ -264,5 +284,7 @@ public class SilverServiceCar extends Car
 			}
 		}
 	}
+	
+
 	
 }

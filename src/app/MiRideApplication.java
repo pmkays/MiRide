@@ -1,6 +1,7 @@
 package app;
 
 import java.io.*;
+import java.util.Scanner;
 
 import cars.Car;
 import cars.SilverServiceCar;
@@ -28,6 +29,8 @@ public class MiRideApplication
 	Car[] SD = new Car[15];
 	Car SDcar;
 	SilverServiceCar SScar;
+	File file;
+	File fileBackup;
 
 	public MiRideApplication()
 	{
@@ -776,29 +779,127 @@ public class MiRideApplication
 	
 	public void writingFile()
 	{
-		File file = new File("Cars.txt");
+		file = new File("Cars.txt");
+		fileBackup = new File("Cars_Backup.txt");
 		PrintWriter output = null;
+		PrintWriter outputBackup = null;
 		try
 		{
-			output = new PrintWriter(new FileOutputStream(file, true));
+			output = new PrintWriter(new FileOutputStream(file, true));	
+			outputBackup = new PrintWriter(new FileOutputStream(fileBackup, true));	
 			
-			for(int i =0; i<cars.length; i++)
+			for (int i =0; i< cars.length; i++)
 			{
-				if (cars[i] != null)
+
+				if (cars[i]!= null && cars[i] instanceof SilverServiceCar)
 				{
-					output.println(cars[i].toString());
+					output.println(cars[i].carToString());
+					outputBackup.println(cars[i].carToString());
+				}
+				else if (cars[i]!= null && !(cars[i] instanceof SilverServiceCar))
+				{
+					output.println(cars[i].carToString());
+					outputBackup.println(cars[i].carToString());
 				}
 			}
+			
 			System.out.println("Writing successful!");
 		}
-		catch (FileNotFoundException e)
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 		
 		output.close();
+		outputBackup.close();
+	}
+
+	
+	public void readFile()
+	{
+		Scanner input = null;
+		try
+		{
+			input = new Scanner(new File("Cars.txt"));
+			addAllCarsPersistance(input);
+
+		}
+		catch (FileNotFoundException e)
+		{
+			try
+			{
+				input = new Scanner(new File("Cars_Backup.txt"));
+				System.out.println("Data was located from a backup file!");
+				addAllCarsPersistance(input);
+				
+			}
+			catch (FileNotFoundException error)
+			{
+				System.out.println("no Booking data was loaded. ");
+			}
+		}
+		
+		input.close();
 	}
 	
+	public void addAllCarsPersistance(Scanner input)
+	{
+		int count =0;
+		final int INDEX_OF_REFRESHMENTS = 6;
+		String refreshments = "";
+		String[] carArray = new String[15];
+		String[] details = new String[10];
+		String[] refreshmentsArray = new String[5];
+		double fee = 0.0;
+		input.useDelimiter("\n");
+		while (input.hasNextLine())
+		{
+			carArray[count] = input.nextLine();	
+			count++;
+		}
+		
+		for(int i =0; i<carArray.length; i++)
+		{
+			if (carArray[i]!=null && !(carArray[i].contains("Item")))
+			{
+				details = carArray[i].split(":");		
+				String id = details[0];
+				String make = details[1];
+				String model = details[2];
+				String name = details[3];
+				int passengerCapacity = Integer.parseInt(details[4]);
+				String availability = (details[5]);
+				cars[itemCount]= new Car(id, make, model, name, passengerCapacity);
+				itemCount++;	
+			}
+			else if (carArray[i]!=null && carArray[i].contains("Item"))
+			{
+				details = carArray[i].split(":");		
+				String id = details[0];
+				String make = details[1];
+				String model = details[2];
+				String name = details[3];
+				int passengerCapacity = Integer.parseInt(details[4]);
+				String availability = (details[5]);
+				
+				for (i = INDEX_OF_REFRESHMENTS; i < details.length; i++)
+				{
+					if (details[i]!= null && details[i].contains("Item"))
+					{
+						refreshments += details[i] + ",";
+					}
+					else if (details[i]!= null && details[i].contains("."))
+					{
+						fee = Double.parseDouble(details[i]);
+					}
+					
+					refreshmentsArray = splitRefreshments(refreshments);
+					cars[itemCount]= new SilverServiceCar(id, make, model, name, passengerCapacity, refreshmentsArray, fee);
+					itemCount++;	
+				}			
+			}
+		}
+	}
 }
 
 

@@ -26,6 +26,7 @@ public class Menu
 	 */
 	public void run() throws InvalidBooking, InvalidRefreshments
 	{
+		application.readFile();
 		final int MENU_ITEM_LENGTH = 2;
 		String input;
 		String choice = "";
