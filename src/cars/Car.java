@@ -1,7 +1,5 @@
 package cars;
 
-import java.util.ArrayList;
-
 import utilities.DateTime;
 import utilities.DateUtilities;
 import utilities.InvalidBooking;
@@ -32,6 +30,7 @@ public class Car
 	private double bookingFee = 1.5;
 	private final int MAXIUM_PASSENGER_CAPACITY = 10;
 	private final int MINIMUM_PASSENGER_CAPACITY = 1;
+	private final int NAME_MINIMUM_LENGTH = 3;
 
 	public Car(String regNo, String make, String model, String driverName, int passengerCapacity)
 	{
@@ -45,56 +44,60 @@ public class Car
 		currentBookings = new Booking[5];
 		pastBookings = new Booking[10];
 	}
-
 	/*
-	 * Checks to see if the booking is permissible such as a valid date, number of
-	 * passengers, and general availability. Creates the booking only if conditions
-	 * are met and assigns the trip fee to be equal to the standard booking fee.
-	 */
-
-	/*
-	 * ALGORITHM BEGIN CHECK if car has five booking CHECK if car has a booking on
-	 * date requested CHECK if the date requested is in the past. CHECK if the
-	 * number of passengers requested exceeds the capacity of the car. IF any checks
-	 * fail return false to indicate the booking operation failed ELSE CREATE the
-	 * booking ADD the booking to the current booking array UPDATE the available
-	 * status if there are now five current bookings. RETURN true to indicate the
-	 * success of the booking. END
+	 * ALGORITHM to validate all necessary business rules before making a booking
 	 * 
-	 * TEST Booking a car to carry 0, 10, & within/without passenger capacity.
-	 * Booking car on date prior to today Booking a car on a date that is more than
-	 * 7 days in advance. Booking car on a date for which it is already booked
-	 * Booking six cars
+	 * BEGIN:
+	 * 		IF the date is not valid, i.e. in the past or greater than 7 days in the future
+	 * 			THROW a new InvalidBooking exception
+	 * 		END IF
+	 * 		
+	 * 		IF not available, i.e. has more than five current bookings
+	 * 			THROW a new InvalidBooking exception
+	 * 		END IF
+	 * 
+	 * 		IF currently booked on that date
+	 * 			THROW a new InvalidBooking exception 
+	 * 		END IF
+	 * 
+	 * 		IF the number of passengers is less than passenger capacity && the length 
+	 * 				of the first name and last name are >= 3 characters
+	 * 			ASSIGN trip fee to the booking fee
+	 * 			COMPLETE a new booking and store it in currentBookings array
+	 * 			Increment booking spot index for next booking 
+	 * 		END IF
+	 * END 		
+	 * 		
 	 */
-
 	public boolean book(String firstName, String lastName, DateTime required, int numPassengers) throws InvalidBooking
 	{
+		boolean booked = false;
 		
+		//checks if date is valid
 		if(!dateIsValid(required))
 		{
 			throw new InvalidBooking("The date is invalid.");
 		}
-//		if(!DateUtilities.dateIsNotInPast(required))
-//		{
-//			throw new InvalidBooking("The date is in the past");
-//		}
 		
-		boolean booked = false;
-		// Does car have five bookings
-		
+		//checks if car has more than 5 current bookings
 		if (!available)
 		{
 			throw new InvalidBooking("No more bookings can be made as there are already 5 current bookings.");
 		}
 		
-		boolean dateAvailable = notCurrentlyBookedOnDate(required);
-		// Date is within range, not in past and within the next week
-		//boolean dateValid = dateIsValid(required);
-		// Number of passengers does not exceed the passenger capacity and is not zero.
-		boolean validPassengerNumber = numberOfPassengersIsValid(numPassengers);
+		//checks if car has already been booked for the day
+		if(!notCurrentlyBookedOnDate(required))
+		{
+			throw new InvalidBooking("The car cannot be booked for this day.");
+		}
 
-		// Booking is permissible
-		if (available && dateAvailable && validPassengerNumber)
+		//checks of passengers does not exceed the passenger capacity and is not zero.
+		boolean validPassengerNumber = numberOfPassengersIsValid(numPassengers);
+		
+		//checks name length is greater than 3 characters
+		boolean nameValidation = nameValidation(firstName, lastName);
+
+		if (validPassengerNumber && nameValidation)
 		{
 			tripFee = bookingFee;
 			Booking booking = new Booking(firstName, lastName, required, numPassengers, this);
@@ -104,6 +107,18 @@ public class Car
 		}
 		available = bookingAvailable();
 		return booked;
+	}
+	
+	private boolean nameValidation(String firstName, String lastName)
+	{
+		if (firstName.length() >= NAME_MINIMUM_LENGTH  && lastName.length() >= NAME_MINIMUM_LENGTH )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/*
@@ -139,10 +154,17 @@ public class Car
 	}
 
 	/*
-	 * Checks the current bookings to see if any of the bookings are for the current
-	 * date. ALGORITHM BEGIN CHECK All bookings IF date supplied matches date for
-	 * any booking date Return true ELSE Return false END
+	 * ALGORITHm to check the current bookings to see if any of the bookings are for the current
+	 * date. 
 	 * 
+	 * BEGIN: 
+	 * 		LOOP through currentBookings array
+	 * 			IF currentBookings array is not empty
+	 * 				IF there is a date in currentBookings that matches user input
+	 * 					THEN return true
+	 * 				END IF
+	 * 			END IF
+	 * END.
 	 */
 	public boolean isCarBookedOnDate(DateTime dateRequired)
 	{
@@ -285,74 +307,6 @@ public class Car
 		}
 		return bookings;	
 	}
-	
-	
-	
-
-	/*
-	 * Human readable presentation of the state of the car.
-	 */
-//	public String getDetails()
-//	{
-//		StringBuilder sb = new StringBuilder();
-//
-//		sb.append(getRecordMarker());
-//		sb.append(String.format("%-15s %s\n", "Reg No:", regNo));
-//		sb.append(String.format("%-15s %s\n", "Make & Model:", make + " " + model));
-//
-//		sb.append(String.format("%-15s %s\n", "Driver Name:", driverName));
-//		sb.append(String.format("%-15s %s\n", "Capacity:", passengerCapacity));
-//
-//		if (bookingAvailable())
-//		{
-//			sb.append(String.format("%-15s %s\n", "Available:", "YES"));
-//		} else
-//		{
-//			sb.append(String.format("%-15s %s\n", "Available:", "NO"));
-//		}
-//
-//		return sb.toString();
-//	}
-//
-//	/*
-//	 * Computer readable state of the car
-//	 */
-//
-//	public String toString()
-//	{
-//		StringBuilder sb = new StringBuilder();
-//		sb.append(regNo + ":" + make + ":" + model);
-//		if (driverName != null)
-//		{
-//			sb.append(":" + driverName);
-//		}
-//		sb.append(":" + passengerCapacity);
-//		if (bookingAvailable())
-//		{
-//			sb.append(":" + "YES");
-//		} else
-//		{
-//			sb.append(":" + "NO");
-//		}
-//
-//		return sb.toString();
-//	}
-
-	// Required getters
-	public String getRegistrationNumber()
-	{
-		return regNo;
-	}
-
-	public String getDriverName()
-	{
-		return driverName;
-	}
-
-	public double getTripFee()
-	{
-		return tripFee;
-	}
 
 	/*
 	 * Checks to see if any past bookings have been recorded
@@ -381,8 +335,6 @@ public class Car
 		currentBookings[bookingIndex] = null;
 		bookingSpotAvailable = bookingIndex;
 
-		// call complete booking on Booking object
-		// double kilometersTravelled = Math.random()* 100;
 		double fee = kilometers * (bookingFee * 0.3);
 		tripFee += fee;
 		booking.completeBooking(kilometers, fee, bookingFee);
@@ -496,14 +448,6 @@ public class Car
 		{
 			if (currentBookings[i] == null)
 			{
-//				if(i == currentBookings.length - 1)
-//				{
-//					available = false;
-//				}
-//				else
-//				{
-//					available = true;
-//				}
 				bookingSpotAvailable = i;
 				return true;
 			}
@@ -591,5 +535,21 @@ public class Car
 	{
 		return this.available;
 	}
+	
+	public String getRegistrationNumber()
+	{
+		return regNo;
+	}
+
+	public String getDriverName()
+	{
+		return driverName;
+	}
+
+	public double getTripFee()
+	{
+		return tripFee;
+	}
+
 
 }

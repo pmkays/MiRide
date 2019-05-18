@@ -9,8 +9,8 @@ import utilities.InvalidRefreshments;
 
 /*
  * Class:		Menu
- * Description:	The class a menu and is used to interact with the user. 
- * Author:		Rodney Cocker && Paula Kurniawan. 
+ * Description:	The menu class is used to interact with the user. 
+ * Author:		Rodney Cocker & Paula Kurniawan [s3782041]. 
  */
 public class Menu
 {
@@ -26,7 +26,7 @@ public class Menu
 	 */
 	public void run() throws InvalidBooking, InvalidRefreshments
 	{
-		application.readFile();
+//		application.readFile();
 		final int MENU_ITEM_LENGTH = 2;
 		String input;
 		String choice = "";
@@ -154,7 +154,7 @@ public class Menu
 				}
 				else
 				{
-					System.out.println("Error - Already exists in the system");
+					System.out.println("Error - Specified service type does not exist.");
 				}
 			}
 		}
@@ -215,7 +215,7 @@ public class Menu
 				System.out.println("There are no available cars on this date.");
 			}
 		}
-		catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException e)
+		catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException | NullPointerException e)
 		{
 			System.out.println(e.toString());
 		}
@@ -268,7 +268,7 @@ public class Menu
 				}
 			}
 		}
-		catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException e)
+		catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException | NullPointerException e)
 		{
 			System.out.println(e.toString());
 		}
@@ -353,9 +353,9 @@ public class Menu
 	 * 
 	 * BEGIN:
 	 * 		PROMPT user for type of car (SD/SS)
-	 * 		ASSIGN variable to user input of type of car
-	 * 		PROMPT user for enter date
-	 * 		ASSIGN variable to user input of date
+	 * 		ASSIGN String variable to user input of type of car
+	 * 		PROMPT user to enter date
+	 * 		ASSIGN String variable to user input of date
 	 * 		SEPARATE the date entered and convert to integers
 	 * 		MAKE a new DateTime object and pass through the converted integers
 	 * 		ASSIGN a string variable to the returned string from a validation method in application class

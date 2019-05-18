@@ -15,7 +15,7 @@ import utilities.MiRidesUtilities;
  * Class:			MiRideApplication
  * Description:		The system manager the manages the 
  *              	collection of data. 
- * Author:			Rodney Cocker && Paula Kurniawan. 
+ * Author:			Rodney Cocker & Paula Kurniawan [s3782041]. 
  */
 public class MiRideApplication
 {
@@ -577,9 +577,7 @@ public class MiRideApplication
 	 * 			LOOP through SSCars array using another integer variable + 1 e.g. j = i+1
 	 * 				IF SSCars array is not null
 	 * 					IF SS[i]'s initial character of regNO is higher than SS[j] when compared to 
-	 * 						ASSIGN temp variable to that SSCar[i]
-	 * 						ASSIGN SS[i] to SS[j] 
-	 * 						ASSIGN SS[j] to temp variable to finish swapping once 
+	 * 						SWAP SS[i] and SS[j]
 	 * 					END IF
 	 * 				END IF
 	 * 
@@ -741,6 +739,7 @@ public class MiRideApplication
 		return sb.toString();
 	}
 	
+	//writes a .txt file when EX in menu is selected and saves all the car details
 	public void writingFile()
 	{
 		file = new File("Cars.txt");
@@ -778,7 +777,7 @@ public class MiRideApplication
 		outputBackup.close();
 	}
 
-	
+	//reads file when program starts up
 	public void readFile()
 	{
 		Scanner input = null;
@@ -804,6 +803,7 @@ public class MiRideApplication
 		}
 	}
 	
+	//assigns text information to variables which then gets passed through as car details
 	public void addAllCarsPersistance(Scanner input)
 	{
 		int count =0;

@@ -1,5 +1,11 @@
 package utilities;
 
+/*
+ * Class:		MiRidesUtilities
+ * Description:	The class is for utility methods pertaining to the MiRideApplication class. 
+ * Author:		Rodney Cocker
+ */
+
 public class MiRidesUtilities 
 {
 	private final static int ID_LENGTH = 6;

@@ -9,8 +9,8 @@ import utilities.InvalidRefreshments;
 /*
  * Class:		SilverServiceCar
  * Description:	This class (child class) extends the Car class (parent class) 
- * and has extra attributes when compared to the car class.
- * Author:		Paula Kurniawan
+ * 				and has extra attributes.
+ * Author:		Paula Kurniawan [s3782041]
  */
 
 public class SilverServiceCar extends Car
@@ -39,17 +39,26 @@ public class SilverServiceCar extends Car
 		}
 	}
 	
+	
+	/*
+	 * ALGORITHM to override the Car class book method
+	 * 
+	 * BEGIN:
+	 * 		ASSIGN boolean variable to true
+	 * 		IF date is greater than three days
+	 * 			THEN throw new InvalidBooking exception
+	 * 			ASSIGN boolean variable to false
+	 * 		END IF
+	 * 
+	 * 		CALL book method of car class
+	 * 		RETURN boolean value (which will be used as a check to see 
+	 * 				if booking has been completed)
+	 * END.
+	 */
+	
 	@Override
 	public boolean book(String firstName, String lastName, DateTime required, int numPassengers) throws InvalidBooking
-	{
-//		boolean booked = false;
-//		if (!dateIsValid3Days(required))
-//		{
-//			super.book(firstName, lastName, required, numPassengers);
-//			booked = true;
-//		}
-//		return booked;
-		
+	{	
 		boolean booked = true;
 		if (!dateIsValid3Days(required))
 		{
@@ -70,25 +79,26 @@ public class SilverServiceCar extends Car
 		return getDetails;
 	}
 	
+	//returns formatted refreshments for getDetails
 	private String refreshmentsDisplay()
 	{
-		String str = "";
+		String snacks = "";
 		int count = 0;
 		for(int i = 0; i < refreshments.length; i++)
 		{
 			if(refreshments[i]!=null)
 			{
 				count++;
-				str += String.format("%n%-17s%s", "Item " + 
+				snacks += String.format("%n%-17s%s", "Item " + 
 						count, refreshments[i]);
 			}
 			else
 			{
-				str += String.format("%n", "Refreshments unavailable");
+				snacks += String.format("%n", "Refreshments unavailable");
 			}
 		}
 		
-		return str + "\n__________________________________________________________________";
+		return snacks + "\n__________________________________________________________________";
 	}
 		
 	@Override
@@ -121,115 +131,26 @@ public class SilverServiceCar extends Car
 		return refreshmentsFinal;
 	}
 	
-	public String refreshmentsToStringPersistance()
-	{
-		String refreshmentsFinal = "";
-		for(int i = 0; i<refreshments.length; i++)
-		{
-			if(refreshments[i]!=null)
-			{
-				refreshmentsFinal += refreshments[i] ;
-			}
-		} 
-		return refreshmentsFinal;
-	}
-	
-	
-//	@Override
-//	public String getDetails()
-//	{
-//		StringBuilder StringBuilder = new StringBuilder();
-//		int count = 1;
-//		
-//		super.getDetails(); 
-//		
-//		StringBuilder.append(getGetRecordMarker());
-//		
-//		StringBuilder.append(String.format("%n", "Refreshments available"));
-//		for(int i = 0; i < refreshments.length; i++)
-//		{
-//			if(refreshments[i]!=null)
-//			{
-//				StringBuilder.append(String.format("-15s %s%n", "Item " + 
-//						count + "      " + refreshments[i]));
-//				count++;
-//			}
-//			else
-//			{
-//				StringBuilder.append(String.format("%n", "Refreshments unavailable"));
-//			}
-//		}
-//		
-//		StringBuilder.append(String.format("%n", "CURRENT BOOKINGS:"));
-//		StringBuilder.append(getGetRecordMarker());
-//		
-//		for(int i = 0; i < getCurrentBooking().length; i++)
-//		{
-//			if(getSpecificCurrentBooking(i)!=null)
-//			{
-//				StringBuilder.append(String.format("%n", getSpecificCurrentBooking(i).getDetails()));
-//				StringBuilder.append(getGetRecordMarker());
-//			}
-//			else
-//			{
-//				StringBuilder.append(String.format("%n", "There are no current bookings"));
-//			}
-//		}
-//		
-//		StringBuilder.append(String.format("%n", "PAST BOOKINGS:"));
-//		for(int i = 0; i < getPastBooking().length; i++)
-//		{
-//			if(getSpecificPastBooking(i)!=null)
-//			{
-//				StringBuilder.append(String.format("%n", getSpecificPastBooking(i).getDetails()));
-//				StringBuilder.append(getGetRecordMarker());
-//			}
-//			else
-//			{
-//				StringBuilder.append(String.format("%n", "There are no past bookings"));
-//			}
-//		}
-//		return StringBuilder.toString();
-//	}
-//	
-//	@Override
-//	public String toString()
-//	{
-//		StringBuilder StringBuilder = new StringBuilder();
-//		super.toString();
-//		for(int i = 0; i < getCurrentBooking().length; i++)
-//		{
-//			if(getSpecificCurrentBooking(i)!=null)
-//			{
-//				StringBuilder.append(getSpecificCurrentBooking(i).toString());
-//			}
-//			else
-//			{
-//				return null;
-//			}
-//		}
-//		
-//		for(int i = 0; i < getPastBooking().length; i++)
-//		{
-//			if(getSpecificPastBooking(i)!=null)
-//			{
-//				StringBuilder.append(getSpecificPastBooking(i).toString());
-//			}
-//			else
-//			{
-//				return null;
-//			}
-//		}
-//		return StringBuilder.toString();
-//	}
-//	
-//	
+	//checks to see if date is valid, i.e. if greater than three days
 	private boolean dateIsValid3Days(DateTime date)
 	{
 		return DateUtilities.dateIsNotInPast(date) && DateUtilities.dateIsNotMoreThan3Days(date);
 	}
 	
-
+	
+	/*
+	 * ALGORITHM to validate the user input of standard booking fee
+	 * 
+	 * BEGIN: 
+	 * 		ASSIGN a boolean variable to false
+	 * 		IF booking Fee >= 3.0 
+	 * 			THEN return boolean variable as true
+	 * 		ELSE
+	 * 			THEN return boolean variable
+	 * 		END IF
+	 * END.
+	 * 			
+	 */
 	public boolean feeValidation(double bookingFee)
 	{
 		boolean checkBookingFee = false;
@@ -243,22 +164,7 @@ public class SilverServiceCar extends Car
 		}	
 	}
 	
-//	public boolean checkRefreshmentsArray(String[] refreshments) throws InvalidRefreshments
-//	{
-//		boolean empty = false;
-//		for (int i =0; i<refreshments.length; i++)
-//		{
-//			if(refreshments[i]!=null)
-//			{
-//				if(i ==2)
-//				{
-//					empty = true;
-//					throw new InvalidRefreshments("There must be at least three refreshments entered");
-//				}
-//			}
-//		}
-//		return empty;
-//	}
+	//checks to see if there are at least 3 refreshments that user has entered
 	public void checkRefreshmentsArray(String[] refreshments) throws InvalidRefreshments
 	{
 		final int MINIMUM_AMOUNT = 3;
@@ -268,6 +174,7 @@ public class SilverServiceCar extends Car
 		}	
 	}
 	
+	//checks to see if there are any duplicate refreshments in the array
 	public void checkRefreshmentsDuplicate(String[] refreshments) throws InvalidRefreshments
 	{
 		for(int i = 0; i< refreshments.length; i++)

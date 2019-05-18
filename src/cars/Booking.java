@@ -3,10 +3,9 @@ package cars;
 import utilities.DateTime;
 import utilities.DateUtilities;
 /*
- * Booking Class
- * Represents a booking in a ride sharing system.
- * This class can be used by other objects not just cars.
- * Author: Rodney Cocker
+ * Class:		Booking
+ * Description:	The class represents a booking in the program. 
+ * Author:		Rodney Cocker & Paula Kurniawan [s3782041]
  */
 public class Booking {
 	
@@ -41,66 +40,6 @@ public class Booking {
 		this.tripFee = tripFee;
 		this.bookingFee = bookingFee;
 	}
-	
-	/*
-	 * Human readable presentation of the state of the car.
-	 */
-//	public String getDetails()
-//	{
-//		StringBuilder sb = new StringBuilder();
-//		sb.append(String.format("%-16s%-20s\n", " ", getRecordMarker()));
-//		sb.append(String.format("%-16s%-20s %s\n", " ", "id:", id));
-//		sb.append(String.format("%-16s%-20s $%.2f\n", " ", "Booking Fee:", bookingFee));
-//		if(dateBooked != null)
-//		{
-//			sb.append(String.format("%-16s%-20s %s\n", " ", "Pick Up Date:", dateBooked.getFormattedDate()));
-//		}
-//		else
-//		{
-//			sb.append(String.format("%-16s%-20s %s\n", " ", "Pick Up Date:", "Invalid"));
-//		}
-//		sb.append(String.format("%-16s%-20s %s\n", " ", "Name:", firstName + " " + lastName));
-//		sb.append(String.format("%-16s%-20s %s\n", " ", "Passengers:", numPassengers));
-//		if(kilometersTravelled == 0)
-//		{
-//		sb.append(String.format("%-16s%-20s %s\n", " ", "Travelled:", "N/A"));
-//		sb.append(String.format("%-16s%-20s %s\n", " ", "Trip Fee:", "N/A"));
-//		}
-//		else
-//		{
-//			sb.append(String.format("%-16s%-20s %.2f\n", " ", "Travelled:", kilometersTravelled));
-//			sb.append(String.format("%-16s%-20s %.2f\n", " ", "Trip Fee:", tripFee));
-//		}
-//		sb.append(String.format("%-16s%-20s %s\n", " ", "Car Id:", car.getRegistrationNumber()));
-//		
-//		return sb.toString();
-//	}
-//	
-//	/*
-//	 * Computer readable state of the car
-//	 */
-//	@Override
-//	public String toString()
-//	{
-//		StringBuilder sb = new StringBuilder();
-//		sb.append(id);
-//		sb.append(":" + bookingFee);
-//		if(dateBooked != null)
-//		{
-//			sb.append(":" + dateBooked.getEightDigitDate());
-//		}
-//		else
-//		{
-//			sb.append(":" + "Invalid");
-//		}
-//		sb.append(":" + firstName + " " + lastName);
-//		sb.append(":" + numPassengers);
-//		sb.append(":" + kilometersTravelled);
-//		sb.append(":" + tripFee);
-//		sb.append(":" + car.getRegistrationNumber());
-//		
-//		return sb.toString();
-//	}
 	
 	public String getDetails()
 	{
@@ -169,7 +108,16 @@ public class Booking {
 	}
 	
 	/*
-	 * Generate an id from regNo, passenger name and the date of the booking.
+	 * ALGORITHM to generate an id from regNo, passenger name and the date of the booking.
+	 * 
+	 * BEGIN:
+	 * 		IF length of first name or length of last name is less than 3 or date is empty 
+	 * 			THEN ASSIGN the id variable to invalid
+	 * 		ELSE
+	 * 			ASSIGN id variable to the regNo, first three characters of the first name 
+	 * 					and last name, and formatted date 
+	 * 		END IF
+	 * END. 
 	 */
 	private void generateId(String regNo, String firstName, String lastName, DateTime date)
 	{
