@@ -18,12 +18,32 @@ public class SilverServiceCar extends Car
 	private String[] refreshments = new String[10];
 	private double bookingFee;
 	
-	public SilverServiceCar(String regNo, String make, String model, String driverName, int passengerCapacity, String[] refreshments, double bookingFee)
+	public SilverServiceCar(String regNo, String make, String model, String driverName, 
+							int passengerCapacity, String[] refreshments, double bookingFee) 
+							throws InvalidRefreshments, InvalidBooking
 	{
 		super(regNo, make, model, driverName, passengerCapacity);
+		
+		boolean uniqueRefreshments = checkRefreshmentsDuplicate(refreshments);
+		boolean refreshmentsMinimumMet = checkRefreshmentsArray(refreshments);
+		boolean bookingFeeMet = feeValidation(bookingFee);
+		if(!uniqueRefreshments)
+		{
+			throw new InvalidRefreshments("There are duplicate refreshments. Please try again.");
+		}
+		
+		if(!refreshmentsMinimumMet)
+		{
+			throw new InvalidRefreshments("There must be at least three refreshments entered. Please try again.");
+		}
+		
+		if(!bookingFeeMet)
+		{
+			throw new InvalidBooking("The booking fee does not meet the minimum");
+		}
+
 		this.refreshments = refreshments;
 		this.bookingFee = bookingFee;
-		
 		super.setBookingFee(bookingFee);
 	}
 	
@@ -38,7 +58,6 @@ public class SilverServiceCar extends Car
 			}
 		}
 	}
-	
 	
 	/*
 	 * ALGORITHM to override the Car class book method
@@ -145,9 +164,8 @@ public class SilverServiceCar extends Car
 	 * 		ASSIGN a boolean variable to false
 	 * 		IF booking Fee >= 3.0 
 	 * 			THEN return boolean variable as true
-	 * 		ELSE
-	 * 			THEN return boolean variable
 	 * 		END IF
+	 * 		RETURN boolean variable
 	 * END.
 	 * 			
 	 */
@@ -156,27 +174,27 @@ public class SilverServiceCar extends Car
 		boolean checkBookingFee = false;
 		if(bookingFee >= 3.0)
 		{
-			return checkBookingFee = true;
+			checkBookingFee = true;
 		}
-		else
-		{
-			return checkBookingFee;
-		}	
+		return checkBookingFee;	
 	}
 	
 	//checks to see if there are at least 3 refreshments that user has entered
-	public void checkRefreshmentsArray(String[] refreshments) throws InvalidRefreshments
+	public boolean checkRefreshmentsArray(String[] refreshments) throws InvalidRefreshments
 	{
 		final int MINIMUM_AMOUNT = 3;
+		boolean minimumMet = true;
 		if(refreshments.length < MINIMUM_AMOUNT)
 		{
-			throw new InvalidRefreshments("There must be at least three refreshments entered. Please try again.");
+			minimumMet = false;
 		}	
+		return minimumMet;
 	}
 	
 	//checks to see if there are any duplicate refreshments in the array
-	public void checkRefreshmentsDuplicate(String[] refreshments) throws InvalidRefreshments
+	public boolean checkRefreshmentsDuplicate(String[] refreshments) throws InvalidRefreshments
 	{
+		boolean duplicate = true; 
 		for(int i = 0; i< refreshments.length; i++)
 		{
 			for (int j = i + 1; j< refreshments.length; j++)
@@ -185,12 +203,12 @@ public class SilverServiceCar extends Car
 				{
 					if (refreshments[i].equals(refreshments[j]))
 					{
-
-						throw new InvalidRefreshments("There are duplicate refreshments. Please try again.");
+						duplicate = false;
 					}
 				}
 			}
 		}
+		return duplicate; 
 	}
 	
 

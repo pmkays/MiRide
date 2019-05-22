@@ -1,5 +1,11 @@
 package utilities;
 
+/*
+ * Class:		DateUtilities
+ * Description:	The class contains date-related utility methods to use from other classes. 
+ * Author:		Rodney Cocker
+ */
+
 public class DateUtilities {
 
 	public static boolean dateIsNotInPast(DateTime date)

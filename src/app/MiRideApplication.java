@@ -49,7 +49,7 @@ public class MiRideApplication
 	}
 	
 	public String createSSCar(String id, String make, String model, String driverName, 
-			int numPassengers, double bookingFee, String[] refreshments) 
+			int numPassengers, double bookingFee, String[] refreshments) throws InvalidBooking, InvalidRefreshments
 	{
 		String validId = isValidId(id);
 		if(isValidId(id).contains("Error:"))
@@ -58,8 +58,16 @@ public class MiRideApplication
 		}
 		if(!checkIfCarExists(id)) 
 		{
-			cars[itemCount] = new SilverServiceCar(id, make, model, driverName, 
-					numPassengers, refreshments, bookingFee);
+			try
+			{
+				cars[itemCount] = new SilverServiceCar(id, make, model, driverName, 
+						numPassengers, refreshments, bookingFee);
+			} 
+			catch (InvalidRefreshments | InvalidBooking e)
+			{
+
+				return e.getMessage();
+			}
 			itemCount++;
 			return "New Car added successfully for registration number: " 
 			+ cars[itemCount-1].getRegistrationNumber();
@@ -202,7 +210,6 @@ public class MiRideApplication
 				}
 			}
 		}
-
 		if (car == null)
 		{
 			return carNotFound;
@@ -240,6 +247,7 @@ public class MiRideApplication
 		}
 		return true;
 	}
+	
 	public String displaySpecificCar(String regNo)
 	{
 		for(int i = 0; i < cars.length; i++)
@@ -255,7 +263,7 @@ public class MiRideApplication
 		return "Error: The car could not be located.";
 	}
 	
-	public boolean seedData() throws InvalidBooking
+	public boolean seedData() throws InvalidBooking, InvalidRefreshments
 	{
 		for(int i = 0; i < cars.length; i++)
 		{
@@ -437,41 +445,11 @@ public class MiRideApplication
 		return car;
 	}
 	
-	//used for fee validation
-	public boolean SSvalidation(double bookingFee, String regNo)
-	{
-		boolean check = false; 
-		SilverServiceCar car = new SilverServiceCar(regNo, null, null, null, 0, new String[] {}, bookingFee);
-
-		 if(car.feeValidation(bookingFee))
-		 {
-			 check = true;
-		 }
-		 return check;
-	}
-	
 	//splits the refreshments array by a user inputed comma. 
 	public String[] splitRefreshments(String refreshments)
 	{
 		refreshmentsArray = refreshments.split(",");
 		return refreshmentsArray;
-	}
-	
-	public String validateRefreshments (String id, String make, String model, String driverName, 
-			int numPassengers, String[] refreshments, double bookingFee) throws InvalidRefreshments
-	{
-		try
-		{
-			SilverServiceCar SScar = new SilverServiceCar(id, make, model, driverName, 
-					numPassengers, refreshments, bookingFee);
-			SScar.checkRefreshmentsArray(refreshments);
-			SScar.checkRefreshmentsDuplicate(refreshments);
-		}
-		catch (InvalidRefreshments e)
-		{
-			return e.getMessage();
-		}	
-		return "";
 	}
 	
 	public boolean dateValidation(String date) throws InvalidBooking
@@ -778,7 +756,7 @@ public class MiRideApplication
 	}
 
 	//reads file when program starts up
-	public void readFile()
+	public void readFile() throws InvalidRefreshments, InvalidBooking
 	{
 		Scanner input = null;
 		try
@@ -804,7 +782,7 @@ public class MiRideApplication
 	}
 	
 	//assigns text information to variables which then gets passed through as car details
-	public void addAllCarsPersistance(Scanner input)
+	public void addAllCarsPersistance(Scanner input) throws InvalidRefreshments, InvalidBooking
 	{
 		int count =0;
 		final int INDEX_OF_REFRESHMENTS = 6;

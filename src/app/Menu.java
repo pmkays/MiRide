@@ -86,7 +86,7 @@ public class Menu
 	/*
 	 * Creates cars for use in the system available or booking.
 	 */
-	private void createCar() throws InvalidRefreshments
+	private void createCar() throws InvalidRefreshments, InvalidBooking
 	{
 		try
 		{
@@ -128,29 +128,11 @@ public class Menu
 					console.nextLine();
 					System.out.println("Enter list of refreshments (separated by a comma, no spaces): ");
 					String refreshments = console.nextLine();
-					
-					boolean validationResult = application.SSvalidation(SDbookingFee, id);
-					if(validationResult) //checks bookingFee >= 3.0 in application class 
-					{
-						refreshmentsArray = application.splitRefreshments(refreshments);
-						//check refreshments here before creating a car
-						String validRefreshments = application.validateRefreshments
-								(id, make, model, driverName, numPassengers, refreshmentsArray, SDbookingFee);
-						
-						System.out.println(validRefreshments);
-						
-						if(validRefreshments.equals(""))
-						{
-							String SScarRegistrationNumber = application.createSSCar
-									(id, make, model, driverName, numPassengers, SDbookingFee, refreshmentsArray);
-							System.out.println(SScarRegistrationNumber);
-						}
-					}
-					else
-					{
-						System.out.println("Booking fee entered does not meet the minimum.");
-					}
-					
+					refreshmentsArray = application.splitRefreshments(refreshments);
+
+					String SScarRegistrationNumber = application.createSSCar
+							(id, make, model, driverName, numPassengers, SDbookingFee, refreshmentsArray);
+					System.out.println(SScarRegistrationNumber);					
 				}
 				else
 				{
@@ -158,7 +140,7 @@ public class Menu
 				}
 			}
 		}
-		catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException e)
+		catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException | NullPointerException e)
 		{
 			System.out.println(e.toString());
 		}
@@ -237,14 +219,18 @@ public class Menu
 			{
 				System.out.print("Enter First Name:");
 				String firstName = console.nextLine();
+				
 				System.out.print("Enter Last Name:");
 				String lastName = console.nextLine();
+				
 				System.out.print("Enter kilometers:");
 				double kilometers = Double.parseDouble(console.nextLine());
+				
 				int day = Integer.parseInt(response.substring(0, 2));
 				int month = Integer.parseInt(response.substring(3, 5));
 				int year = Integer.parseInt(response.substring(6));
 				DateTime dateOfBooking = new DateTime(day, month, year);
+				
 				result = application.completeBooking(firstName, lastName, dateOfBooking, kilometers);
 				System.out.println(result);
 			} 
@@ -253,12 +239,15 @@ public class Menu
 				
 				System.out.print("Enter First Name:");
 				String firstName = console.nextLine();
+				
 				System.out.print("Enter Last Name:");
 				String lastName = console.nextLine();
+				
 				if(application.getBookingByName(firstName, lastName, response))
 				{
 					System.out.print("Enter kilometers:");
 					double kilometers = Double.parseDouble(console.nextLine());
+					
 					result = application.completeBooking(firstName, lastName, response, kilometers);
 					System.out.println(result);
 				}
