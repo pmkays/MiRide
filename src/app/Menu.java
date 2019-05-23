@@ -24,9 +24,9 @@ public class Menu
 	/*
 	 * Runs the menu in a loop until the user decides to exit the system.
 	 */
-	public void run() throws InvalidBooking, InvalidRefreshments
+	public void run()
 	{
-//		application.readFile();
+		application.readFile();
 		final int MENU_ITEM_LENGTH = 2;
 		String input;
 		String choice = "";
@@ -66,7 +66,14 @@ public class Menu
 					searchAvailableCars();
 					break;
 				case "SD":
-					application.seedData();
+					try
+					{
+						application.seedData();
+					}
+					catch (InvalidBooking | InvalidRefreshments e)
+					{
+						e.toString();
+					}
 					break;
 				case "EX":
 					choice = "EX";
@@ -86,7 +93,7 @@ public class Menu
 	/*
 	 * Creates cars for use in the system available or booking.
 	 */
-	private void createCar() throws InvalidRefreshments, InvalidBooking
+	private void createCar()
 	{
 		try
 		{
@@ -149,7 +156,7 @@ public class Menu
 	/*
 	 * Book a car by finding available cars for a specified date.
 	 */
-	private void book() throws InvalidBooking
+	private void book()
 	{
 		try
 		{

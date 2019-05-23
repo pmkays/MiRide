@@ -11,7 +11,7 @@ import utilities.InvalidRefreshments;
  */
 public class Driver {
 
-	public static void main(String[] args) throws InvalidBooking, InvalidRefreshments 
+	public static void main(String[] args)
 	{
 		Menu menu = new Menu();
 		menu.run();

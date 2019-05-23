@@ -49,7 +49,7 @@ public class MiRideApplication
 	}
 	
 	public String createSSCar(String id, String make, String model, String driverName, 
-			int numPassengers, double bookingFee, String[] refreshments) throws InvalidBooking, InvalidRefreshments
+			int numPassengers, double bookingFee, String[] refreshments) 
 	{
 		String validId = isValidId(id);
 		if(isValidId(id).contains("Error:"))
@@ -114,7 +114,7 @@ public class MiRideApplication
 	}
 	
 	public String book(String firstName, String lastName, DateTime required, 
-			int numPassengers, String registrationNumber) throws InvalidBooking
+			int numPassengers, String registrationNumber)
 	{
 		Car car = getCarById(registrationNumber);
 		if(car != null)
@@ -144,7 +144,7 @@ public class MiRideApplication
 	}
 	
 	public String SSbook(String firstName, String lastName, DateTime required, 
-			int numPassengers, String registrationNumber) throws InvalidBooking
+			int numPassengers, String registrationNumber)
 	{
 		SilverServiceCar car = getSSCarById(registrationNumber);
 		if(car != null)
@@ -263,7 +263,7 @@ public class MiRideApplication
 		return "Error: The car could not be located.";
 	}
 	
-	public boolean seedData() throws InvalidBooking, InvalidRefreshments
+	public boolean seedData() throws InvalidBooking, InvalidRefreshments 
 	{
 		for(int i = 0; i < cars.length; i++)
 		{
@@ -756,12 +756,13 @@ public class MiRideApplication
 	}
 
 	//reads file when program starts up
-	public void readFile() throws InvalidRefreshments, InvalidBooking
+	public void readFile()
 	{
 		Scanner input = null;
 		try
 		{
 			input = new Scanner(new File("Cars.txt"));
+			System.out.println("Data loaded successfully!");
 			addAllCarsPersistance(input);	
 			input.close();
 		}
@@ -782,7 +783,7 @@ public class MiRideApplication
 	}
 	
 	//assigns text information to variables which then gets passed through as car details
-	public void addAllCarsPersistance(Scanner input) throws InvalidRefreshments, InvalidBooking
+	public void addAllCarsPersistance(Scanner input)
 	{
 		int count =0;
 		final int INDEX_OF_REFRESHMENTS = 6;
@@ -841,9 +842,17 @@ public class MiRideApplication
 					{
 						fee = Double.parseDouble(details[j]);
 					}
-				}			
-				cars[itemCount]= new SilverServiceCar(id, make, model, name, 
-						passengerCapacity, refreshmentsArray, fee);			
+				}
+				try
+				{
+					cars[itemCount]= new SilverServiceCar(id, make, model, name, 
+						passengerCapacity, refreshmentsArray, fee);	
+				}
+				catch (InvalidRefreshments | InvalidBooking e)
+				{
+					e.toString();
+				}
+				
 				if(itemCount < cars.length -1)
 				{
 					itemCount++;
